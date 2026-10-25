@@ -18,3 +18,8 @@ npm-debug.log*
 # Environment variables
 .env
 .env.local
+# Build / test output
+dist/
+.astro/
+test-results/
+playwright-report/

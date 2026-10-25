@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+/*
+  Design tokens — heiyoaerry.one 2027.
+  Font pairs — swap the three --display / --body / --dw lines in :root
+  (also update the Google Fonts URL in src/layouts/Base.astro):
+    'Pixelify Sans' / 'Space Mono'    / 700   (default)
+    'Press Start 2P' / 'JetBrains Mono' / 400
+    'Jersey 10'      / 'Geist Mono'     / 400
+    'DotGothic16'    / 'Geist Mono'     / 400
+    'Silkscreen'     / 'IBM Plex Mono'  / 700
+*/
+:root {
+  --accent: #00ff00; /* alt: #C8F135 (Jitu lime). Fills only — never text on cream. */
+  --bg: #f2eee3;
+  --surface: #f7f5ef;
+  --surface-2: #e6e2d6;
+  --surface-3: #cfccc3;
+  --text: #333333;
+  --text-2: #666666; /* labels and meta — never lighter */
+  --text-body: #444444;
+  --tick: #9a968c;
+
+  --display: 'Pixelify Sans', monospace;
+  --body: 'Space Mono', monospace;
+  --dw: 700;
+}
+
+/* Tailwind theme reads the same variables, so utilities and raw CSS agree. */
+@theme inline {
+  --color-accent: var(--accent);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-ink: var(--text);
+  --color-ink-2: var(--text-2);
+  --color-ink-body: var(--text-body);
+
+  --font-display: var(--display);
+  --font-body: var(--body);
+
+  --radius-btn: 4px;
+  --radius-chip: 999px;
+
+  --spacing-section: 72px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+  }
+  a {
+    color: var(--text);
+  }
+  a:hover {
+    color: #000;
+  }
+  :focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 3px;
+  }
+  .skip-link {
+    position: absolute;
+    left: 16px;
+    top: -100px;
+    z-index: 10;
+    padding: 8px 14px;
+    background: var(--accent);
+    border: 2px solid var(--text);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .skip-link:focus {
+    top: 16px;
+  }
+}
+
+/* Signature effects */
+@layer components {
+  .px {
+    font-family: var(--display);
+    font-weight: var(--dw) !important;
+    letter-spacing: 0.01em;
+  }
+
+  /* Ruler ticks on all four page edges */
+  .frame {
+    background-image:
+      repeating-linear-gradient(90deg, var(--tick) 0 1px, transparent 1px 12px),
+      repeating-linear-gradient(90deg, var(--tick) 0 1px, transparent 1px 12px),
+      repeating-linear-gradient(180deg, var(--tick) 0 1px, transparent 1px 12px),
+      repeating-linear-gradient(180deg, var(--tick) 0 1px, transparent 1px 12px);
+    background-size: 100% 8px, 100% 8px, 8px 100%, 8px 100%;
+    background-position: top left, bottom left, top left, top right;
+    background-repeat: no-repeat;
+  }
+
+  /* Dashed double divider */
+  .rule {
+    height: 6px;
+    background:
+      repeating-linear-gradient(90deg, var(--text) 0 6px, transparent 6px 9px) top / 100% 1px no-repeat,
+      repeating-linear-gradient(90deg, var(--text) 0 6px, transparent 6px 9px) bottom / 100% 1px no-repeat;
+  }
+
+  /* Dotted filler after a section title */
+  .leader {
+    flex: 1 1 auto;
+    min-width: 24px;
+    border-bottom: 2px dotted var(--text);
+    transform: translateY(-6px);
+  }
+
+  /* 4px dot pattern for shadows and title bars */
+  .dither {
+    background-image: radial-gradient(var(--text) 0.9px, transparent 1.1px);
+    background-size: 4px 4px;
+  }
+
+  /* Card shadow: wrapper .pixel-shadow.dither (not .shadow — Tailwind owns that name) + inner .lift */
+  .lift {
+    transform: translate(-6px, -6px);
+    transition: transform 0.12s steps(2);
+  }
+  .pixel-shadow:hover .lift,
+  .pixel-shadow:focus-within .lift {
+    transform: translate(-3px, -3px);
+  }
+
+  .blink {
+    animation: blink 1s steps(1) infinite;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .blink {
+    animation: none;
+  }
+  .lift {
+    transition: none;
+  }
+}
