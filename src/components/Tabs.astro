@@ -1,0 +1,67 @@
+---
+import Tab from './Tab.astro';
+
+interface Props {
+  tabs: string[];
+  label: string;
+  /** id of the element the tabs filter */
+  controls: string;
+  selected?: string;
+}
+
+const { tabs, label, controls, selected = tabs[0] } = Astro.props;
+const slug = (t: string) => `tab-${t.toLowerCase().replace(/\W+/g, '-')}`;
+---
+
+<pixel-tabs class="block">
+  <div role="tablist" aria-label={label} class="flex flex-wrap">
+    {
+      tabs.map((t) => (
+        <Tab
+          role="tab"
+          id={slug(t)}
+          data-value={t}
+          aria-controls={controls}
+          aria-selected={String(t === selected)}
+          tabindex={t === selected ? 0 : -1}
+        >
+          {t}
+        </Tab>
+      ))
+    }
+  </div>
+</pixel-tabs>
+
+<script>
+  // Emits `tabchange` (detail = tab value). Arrow keys / Home / End move between tabs.
+  class PixelTabs extends HTMLElement {
+    connectedCallback() {
+      const tabs = [...this.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+
+      const select = (tab: HTMLButtonElement, focus = false) => {
+        for (const t of tabs) {
+          const on = t === tab;
+          t.setAttribute('aria-selected', String(on));
+          t.tabIndex = on ? 0 : -1;
+        }
+        if (focus) tab.focus();
+        this.dispatchEvent(new CustomEvent('tabchange', { detail: tab.dataset.value, bubbles: true }));
+      };
+
+      this.addEventListener('click', (e) => {
+        const tab = (e.target as Element).closest<HTMLButtonElement>('[role="tab"]');
+        if (tab) select(tab);
+      });
+
+      this.addEventListener('keydown', (e) => {
+        const i = tabs.indexOf(document.activeElement as HTMLButtonElement);
+        if (i < 0) return;
+        const next = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+        if (next === undefined) return;
+        e.preventDefault();
+        select(tabs[(next + tabs.length) % tabs.length], true);
+      });
+    }
+  }
+  customElements.define('pixel-tabs', PixelTabs);
+</script>

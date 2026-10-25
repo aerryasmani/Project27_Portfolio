@@ -1,0 +1,37 @@
+---
+import type { Project } from '../data/projects';
+
+interface Props {
+  project: Project;
+  index: number;
+}
+
+const { project: p, index } = Astro.props;
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<div class="pixel-shadow dither" data-cat={p.cat}>
+  <article class="lift flex h-full flex-col border-2 border-ink bg-surface">
+    <div class="flex items-center justify-between border-b-2 border-ink bg-surface-2 px-3.5 py-2.5 text-xs">
+      <span class="font-bold tracking-[0.08em]">{p.kind}</span>
+      <span data-index>#{pad(index)}</span>
+    </div>
+    <div class="flex flex-1 flex-col gap-3 px-4 py-[18px]">
+      <h3 class="px m-0 text-[22px]">{p.name}</h3>
+      <p class="m-0 text-[15px] leading-[1.55] text-ink-body">{p.desc}</p>
+      <p class="m-0 text-[13px] text-ink-2">{p.stack}</p>
+      <div class="mt-auto pt-2 text-sm font-bold">
+        {
+          p.href ? (
+            <a href={p.href}>
+              {p.link}
+              <span class="sr-only"> — {p.name}</span> →
+            </a>
+          ) : (
+            <span class="text-ink-2">{p.link}</span>
+          )
+        }
+      </div>
+    </div>
+  </article>
+</div>

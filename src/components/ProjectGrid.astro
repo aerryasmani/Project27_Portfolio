@@ -1,0 +1,56 @@
+---
+import ProjectCard from './ProjectCard.astro';
+import SectionHeader from './SectionHeader.astro';
+import Tabs from './Tabs.astro';
+import { tabsFor, type Project } from '../data/projects';
+
+interface Props {
+  id: string;
+  title: string;
+  projects: Project[];
+}
+
+const { id, title, projects } = Astro.props;
+const gridId = `${id}-grid`;
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<section id={id} class="scroll-mt-6">
+<project-grid class="flex flex-col gap-7">
+  <SectionHeader title={title}><span aria-live="polite"><span data-count>{pad(projects.length)}</span> ITEMS</span></SectionHeader>
+  <Tabs tabs={tabsFor(projects)} label="Filter projects" controls={gridId} />
+  <div
+    id={gridId}
+    role="tabpanel"
+    aria-labelledby="tab-all"
+    class="grid grid-cols-[repeat(auto-fill,minmax(min(100%,340px),1fr))] gap-x-8 gap-y-9"
+  >
+    {projects.map((p, i) => <ProjectCard project={p} index={i + 1} />)}
+  </div>
+  <slot />
+</project-grid>
+</section>
+
+<script>
+  class ProjectGrid extends HTMLElement {
+    connectedCallback() {
+      const panel = this.querySelector<HTMLElement>('[role="tabpanel"]')!;
+      const count = this.querySelector<HTMLElement>('[data-count]')!;
+      const cards = [...panel.querySelectorAll<HTMLElement>('[data-cat]')];
+      const pad = (n: number) => String(n).padStart(2, '0');
+
+      this.addEventListener('tabchange', (e) => {
+        const filter = (e as CustomEvent<string>).detail;
+        let n = 0;
+        for (const card of cards) {
+          const show = filter === 'All' || card.dataset.cat === filter;
+          card.hidden = !show;
+          if (show) card.querySelector('[data-index]')!.textContent = `#${pad(++n)}`;
+        }
+        count.textContent = pad(n);
+        panel.setAttribute('aria-labelledby', (e.target as Element).querySelector('[aria-selected="true"]')!.id);
+      });
+    }
+  }
+  customElements.define('project-grid', ProjectGrid);
+</script>

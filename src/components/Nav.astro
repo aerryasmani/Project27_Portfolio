@@ -1,0 +1,20 @@
+---
+import Tab from './Tab.astro';
+
+const links = [
+  { href: '/#work', label: 'Work' },
+  { href: '/#experience', label: 'Experience' },
+  { href: '/#stack', label: 'Stack' },
+  { href: '/#writing', label: 'Writing' },
+  { href: '/#contact', label: 'Contact', on: true },
+];
+---
+
+<header class="flex flex-wrap items-center justify-between gap-4 pt-4">
+  <a href="/" class="px text-[22px] text-ink no-underline">
+    HEIYOAERRY.ONE<span class="blink" aria-hidden="true">_</span>
+  </a>
+  <nav aria-label="Primary" class="flex flex-wrap">
+    {links.map((l) => <Tab href={l.href} on={l.on}>{l.label}</Tab>)}
+  </nav>
+</header>
