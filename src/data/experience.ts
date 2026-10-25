@@ -12,9 +12,9 @@ export const experience: Job[] = [
   {
     dates: 'JUL 2026 — NOW',
     company: 'NETS MALAYSIA',
-    role: 'Senior QA Automation Engineer · CTSLite',
+    role: 'Senior QA Automation Engineer',
     summary:
-      'First dedicated automation engineer. Took a fully manual process and an empty repo to a Playwright smoke test and API test wired end-to-end through Jenkins.',
+      'First dedicated automation engineer. Took a fully manual regression process to an automated UI and API suite that runs on schedule, with database checks built in.',
     current: true,
   },
   {

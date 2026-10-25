@@ -5,39 +5,50 @@ export interface StackGroup {
   items: [name: string, level: StackLevel][];
 }
 
+// daily = current day-to-day work; regular = side projects / previous roles; used = familiar, not current.
+// Order within a group: daily first, then regular, then used.
 export const stack: StackGroup[] = [
   {
     title: 'UI AUTOMATION',
     items: [
-      ['Playwright', 'daily'],
-      ['Selenium', 'regular'],
-      ['Katalon', 'regular'],
+      ['Selenium WebDriver', 'daily'],
+      ['TestNG', 'daily'],
+      ['Playwright', 'regular'],
+      ['Katalon', 'used'],
       ['Applitools', 'used'],
     ],
   },
   {
-    title: 'API & PERFORMANCE',
+    title: 'API & DATA',
     items: [
+      ['REST Assured', 'daily'],
+      ['SQL', 'daily'],
       ['Postman', 'regular'],
       ['JMeter', 'used'],
-      ['SQL validation', 'regular'],
     ],
   },
   {
-    title: 'CI/CD & REPORTING',
+    title: 'CI/CD & OPS',
     items: [
-      ['Jenkins', 'daily'],
-      ['GitHub Actions', 'regular'],
+      ['Git', 'daily'],
       ['Bitbucket', 'daily'],
+      ['Linux', 'daily'],
+      ['Bash', 'daily'],
+      ['GitHub Actions', 'regular'],
+      ['Jenkins', 'regular'],
       ['Allure', 'used'],
     ],
   },
   {
     title: 'LANGUAGES & BUILD',
     items: [
-      ['JavaScript', 'daily'],
+      ['Java', 'daily'],
+      ['Spring Boot', 'daily'],
+      ['Maven', 'daily'],
+      ['IntelliJ IDEA', 'daily'],
+      ['JavaScript', 'regular'],
       ['Python', 'regular'],
-      ['React', 'regular'],
+      ['React', 'used'],
       ['Node.js', 'used'],
     ],
   },
