@@ -11,7 +11,7 @@
     'Silkscreen'     / 'IBM Plex Mono'  / 700
 */
 :root {
-  --accent: #00ff00; /* alt: #C8F135 (Jitu lime). Fills only — never text on cream. */
+  --accent: #ffd23f; /* safety yellow (was #00FF00). Fills only — never text on cream; keep ≥4.5:1 vs --text. */
   --bg: #f2eee3;
   --surface: #f7f5ef;
   --surface-2: #e6e2d6;
