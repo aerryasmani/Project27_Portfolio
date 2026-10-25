@@ -1,0 +1,95 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import WindowCard from '../components/WindowCard.astro';
+import img1 from '../assets/about/img-1.jpg';
+import img2 from '../assets/about/img-2.jpg';
+import img3 from '../assets/about/img-3.jpg';
+import img4 from '../assets/about/img-4.jpg';
+import img5 from '../assets/about/img-5.jpg';
+
+const photos = [
+  { src: img1, caption: 'Exploring new coffee shops in Kuala Lumpur' },
+  { src: img2, caption: 'Cooking for friends' },
+  { src: img3, caption: 'Going on a hike' },
+  { src: img4, caption: 'Catching up on reading' },
+  { src: img5, caption: 'Annoying the hell out of Watson' },
+];
+---
+
+<Base
+  title="About — Aerry Asmani"
+  description="About Aerry Asmani — QA Automation Engineer combining usability thinking with test automation."
+>
+  <section class="flex flex-col gap-6">
+    <p class="m-0 text-sm font-bold tracking-[0.08em] text-ink-2">ABOUT</p>
+    <h1 class="px m-0 max-w-[18ch] text-[clamp(36px,6vw,64px)] leading-none">
+      Technology should feel usable for everyone.
+    </h1>
+    <p class="m-0 max-w-[48ch] text-lg leading-normal">
+      Regardless of age or familiarity with modern systems.
+    </p>
+  </section>
+
+  <section class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] gap-x-12 gap-y-10">
+    <div class="flex flex-col gap-5">
+      <SectionHeader title="MY JOURNEY">SO FAR</SectionHeader>
+      <div class="flex flex-col gap-4 text-base leading-[1.65] text-ink-body">
+        <p class="m-0">
+          I enjoy creating digital experiences that are clear, reliable, and easy to use. My journey started with UI
+          Design, where I focused on simplifying user flows and making products during hackathons.
+        </p>
+        <p class="m-0">
+          Over time, my curiosity led me beyond design into systems, support, and testing. Exploring how products work
+          behind the scenes naturally pulled me toward quality and automation.
+        </p>
+        <p class="m-0">
+          Today, I work as a QA Automation Engineer, combining my UX background and system understanding to help build
+          user-friendly and dependable products.
+        </p>
+      </div>
+    </div>
+
+    <WindowCard title="WHY DESIGN + QA?" heading close class="self-start">
+      <div class="flex flex-col gap-4 p-6 text-base leading-[1.65] text-ink-body">
+        <p class="m-0">
+          My interest in IT began with my late grandmother, who often struggled to use mobile apps. Seeing how poor
+          usability could exclude elderly users pushed me toward human-centered interface design.
+        </p>
+        <p class="m-0">
+          Interface design shapes how people interact with products, while QA ensures those interactions work reliably.
+          Engineering school trained me in attention to detail, edge-case thinking, and user empathy. The best products
+          are built when empathy and quality work hand in hand.
+        </p>
+      </div>
+    </WindowCard>
+  </section>
+
+  <section class="flex flex-col gap-7">
+    <SectionHeader title="OFF THE CLOCK">{String(photos.length).padStart(2, '0')} ITEMS</SectionHeader>
+    <ul class="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(min(100%,200px),1fr))] gap-x-6 gap-y-8 p-0">
+      {
+        photos.map((p) => (
+          <li>
+            <figure class="m-0 flex flex-col gap-3">
+              <div class="pixel-shadow dither">
+                <div class="lift border-2 border-ink bg-surface-2">
+                  <Image
+                    src={p.src}
+                    alt=""
+                    width={480}
+                    widths={[240, 480]}
+                    sizes="(max-width: 480px) 100vw, 240px"
+                    class="block aspect-[4/5] h-auto w-full object-cover"
+                  />
+                </div>
+              </div>
+              <figcaption class="text-sm text-ink-2">{p.caption}</figcaption>
+            </figure>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>

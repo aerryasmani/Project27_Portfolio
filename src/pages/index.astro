@@ -1,0 +1,175 @@
+---
+import Base from '../layouts/Base.astro';
+import PixelButton from '../components/PixelButton.astro';
+import WindowCard from '../components/WindowCard.astro';
+import Stat from '../components/Stat.astro';
+import ProjectGrid from '../components/ProjectGrid.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import ExperienceRow from '../components/ExperienceRow.astro';
+import Chip from '../components/Chip.astro';
+import { featured } from '../data/projects';
+import { experience } from '../data/experience';
+import { stack } from '../data/stack';
+import { stats } from '../data/stats';
+import { links } from '../data/links';
+import { getPosts } from '../data/posts';
+
+const posts = await getPosts(3);
+const profile = [
+  ['Name', 'Aerry Asmani'],
+  ['Role', 'Senior QA Automation Engineer'],
+  ['At', 'NETS Malaysia'],
+];
+---
+
+<Base
+  title="Aerry Asmani — QA Automation"
+  description="Aerry Asmani, Senior QA Automation Engineer in Kuala Lumpur. Playwright, Jenkins and test infrastructure — from empty repo to green pipeline."
+>
+  <!-- HERO -->
+  <section id="top" class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] items-end gap-12">
+    <div class="flex flex-col gap-6">
+      <p class="m-0 text-sm font-bold tracking-[0.08em] text-ink-2">QA AUTOMATION ENGINEER · KUALA LUMPUR · GMT+8</p>
+      <h1 class="px m-0 text-[clamp(56px,9vw,112px)] leading-[0.92]">AERRY<br />ASMANI</h1>
+      <p class="m-0 max-w-[34ch] text-lg leading-normal sm:text-[22px]">
+        I turn manual test suites into green pipelines — from empty repo to Playwright + Jenkins, one vertical slice at a
+        time.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <PixelButton href="#work" variant="primary">View work</PixelButton>
+        <PixelButton href="#contact">Get in touch</PixelButton>
+      </div>
+    </div>
+
+    <WindowCard title="USER PROFILE" class="rounded-[2px]">
+      <span slot="badge" class="border-2 border-ink bg-surface px-2 py-0.5 text-[13px] font-bold">ID: HEIYOJUN</span>
+      <div class="flex flex-wrap items-center gap-5 p-5">
+        <div class="flex size-28 flex-none items-center justify-center border-2 border-ink bg-surface-2">
+          <svg width="80" height="80" viewBox="0 0 16 16" role="img" aria-label="Pixel avatar" shape-rendering="crispEdges">
+            <g fill="#333">
+              <rect x="5" y="2" width="6" height="1" />
+              <rect x="4" y="3" width="8" height="5" />
+              <rect x="5" y="8" width="6" height="1" />
+              <rect x="6" y="9" width="4" height="1" />
+              <rect x="3" y="11" width="10" height="1" />
+              <rect x="2" y="12" width="12" height="4" />
+            </g>
+            <g fill="#e6e2d6"><rect x="6" y="5" width="1" height="1" /><rect x="9" y="5" width="1" height="1" /></g>
+          </svg>
+        </div>
+        <dl class="m-0 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-[15px]">
+          {
+            profile.map(([k, v]) => (
+              <>
+                <dt class="text-ink-2">{k}:</dt>
+                <dd class="m-0 font-bold">{v}</dd>
+              </>
+            ))
+          }
+          <dt class="text-ink-2">Status:</dt>
+          <dd class="m-0 flex items-center gap-2 font-bold">
+            <span aria-hidden="true" class="size-2.5 border-2 border-ink bg-accent"></span>Building
+          </dd>
+        </dl>
+      </div>
+    </WindowCard>
+  </section>
+
+  <!-- STATS -->
+  <section aria-label="Highlights" class="flex flex-col gap-5">
+    <div class="rule"></div>
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-6">
+      {stats.map((s) => <Stat {...s} />)}
+    </div>
+    <div class="rule"></div>
+  </section>
+
+  <!-- WORK -->
+  <ProjectGrid id="work" title="SELECTED WORK" projects={featured}>
+    <a href="/projects" class="self-start text-sm font-bold">All projects →</a>
+  </ProjectGrid>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" class="flex scroll-mt-6 flex-col gap-7">
+    <SectionHeader title="EXPERIENCE">LOG</SectionHeader>
+    <ol class="m-0 list-none border-2 border-ink bg-surface p-0">
+      {experience.map((job) => <ExperienceRow job={job} />)}
+    </ol>
+  </section>
+
+  <!-- STACK -->
+  <section id="stack" class="flex scroll-mt-6 flex-col gap-7">
+    <SectionHeader title="STACK"><span aria-hidden="true">■ DAILY ▒ REGULAR □ USED</span></SectionHeader>
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-x-8 gap-y-7">
+      {
+        stack.map((g) => (
+          <div class="flex flex-col gap-3">
+            <h3 class="m-0 text-sm tracking-[0.08em] text-ink-2">{g.title}</h3>
+            <ul class="m-0 flex list-none flex-wrap gap-2.5 p-0">
+              {g.items.map(([name, level]) => (
+                <li>
+                  <Chip variant={level}>{name}</Chip>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- WRITING -->
+  <section id="writing" class="flex scroll-mt-6 flex-col gap-7">
+    <SectionHeader title="WRITING">
+      <a href={links.medium} class="text-sm font-bold">medium.com/@BukanJun →</a>
+    </SectionHeader>
+    <div class="flex flex-col border-t-2 border-ink">
+      {
+        posts.map((p) => (
+          <a
+            href={p.href}
+            class="flex flex-wrap justify-between gap-x-6 gap-y-2 border-b-2 border-ink px-1 py-[18px] no-underline hover:bg-surface-2"
+          >
+            <span class="text-lg font-bold">{p.title}</span>
+            <span class="text-sm text-ink-2">
+              {p.date}
+              {p.minutes && ` · ${p.minutes} min`}
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="flex scroll-mt-6 justify-center">
+    <WindowCard title="SYSTEM MESSAGE" heading close class="w-full max-w-[720px]">
+      <div class="flex flex-col gap-5 px-6 py-7">
+        <div class="flex items-start gap-4">
+          <svg width="40" height="40" viewBox="0 0 10 10" aria-hidden="true" shape-rendering="crispEdges" class="flex-none">
+            <path
+              d="M5 0h0v1h1v2h1v2h1v2h1v2h1v1H0V9h1V7h1V5h1V3h1V1h1z"
+              fill="#f5c400"
+              stroke="#333"
+              stroke-width="0.6"></path>
+            <rect x="4.5" y="3.5" width="1" height="3" fill="#333"></rect>
+            <rect x="4.5" y="7.5" width="1" height="1" fill="#333"></rect>
+          </svg>
+          <div class="flex flex-col gap-2">
+            <p class="px m-0 text-xl sm:text-[22px]">!! OPEN TO CONVERSATIONS</p>
+            <p class="m-0 text-base leading-[1.55] text-ink-body">
+              Senior SQA, automation lead and test-infrastructure roles — in Malaysia or remote. Response time: usually
+              within 48h.
+            </p>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-3.5">
+          <PixelButton href={links.email} variant="primary">Email me</PixelButton>
+          <PixelButton href={links.github}>GitHub</PixelButton>
+          <PixelButton href={links.linkedin}>LinkedIn</PixelButton>
+          <PixelButton href={links.medium}>Medium</PixelButton>
+        </div>
+      </div>
+    </WindowCard>
+  </section>
+</Base>

@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import PixelButton from '../components/PixelButton.astro';
+import WindowCard from '../components/WindowCard.astro';
+---
+
+<Base title="404 — Aerry Asmani" description="Page not found.">
+  <section class="flex justify-center">
+    <WindowCard title="ERROR 404" heading close class="w-full max-w-[560px]">
+      <div class="flex flex-col gap-5 px-6 py-7">
+        <p class="px m-0 text-[22px]">!! PAGE NOT FOUND</p>
+        <p class="m-0 text-base leading-[1.55] text-ink-body">That route doesn’t exist — it may have moved in the redesign.</p>
+        <div class="flex flex-wrap gap-3.5">
+          <PixelButton href="/" variant="primary">Home</PixelButton>
+          <PixelButton href="/projects">Projects</PixelButton>
+        </div>
+      </div>
+    </WindowCard>
+  </section>
+</Base>
