@@ -14,7 +14,7 @@ const links = [
   <a href="/" class="px text-[22px] text-ink no-underline">
     HEIYOAERRY.ONE<span class="blink" aria-hidden="true">_</span>
   </a>
-  <nav aria-label="Primary" class="flex w-full flex-wrap pb-0.5 pl-0.5 sm:w-auto">
-    {links.map((l) => <Tab href={l.href} on={l.on}>{l.label}</Tab>)}
+  <nav aria-label="Primary" class="flex w-full flex-nowrap overflow-x-auto pb-0.5 pl-0.5 md:w-auto md:overflow-visible">
+    {links.map((l) => <Tab href={l.href} on={l.on} class="flex-none max-md:focus-visible:outline-offset-[-6px]">{l.label}</Tab>)}
   </nav>
 </header>

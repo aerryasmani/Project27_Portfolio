@@ -23,7 +23,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     id={gridId}
     role="tabpanel"
     aria-labelledby="tab-all"
-    class="grid grid-cols-[repeat(auto-fill,minmax(min(100%,340px),1fr))] gap-x-8 gap-y-9"
+    class="grid grid-cols-1 gap-x-8 gap-y-9 sm:grid-cols-[repeat(auto-fill,minmax(min(100%,340px),1fr))]"
   >
     {projects.map((p, i) => <ProjectCard project={p} index={i + 1} />)}
   </div>
