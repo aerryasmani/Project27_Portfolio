@@ -45,9 +45,9 @@ const profile = [
 
     <WindowCard title="USER PROFILE" class="w-full max-w-[560px] rounded-[2px] lg:max-w-none">
       <span slot="badge" class="border-2 border-ink bg-surface px-2 py-0.5 text-[13px] font-semibold">ID: HEIYOJUN</span>
-      <div class="flex flex-wrap items-center gap-5 p-5">
-        <div class="flex size-28 flex-none items-center justify-center border-2 border-ink bg-surface-2">
-          <svg width="80" height="80" viewBox="0 0 16 16" role="img" aria-label="Pixel avatar" shape-rendering="crispEdges">
+      <div class="flex flex-nowrap items-center gap-[18px] p-4 max-[419px]:flex-wrap sm:p-5">
+        <div class="flex size-[88px] flex-none items-center justify-center border-2 border-ink bg-surface-2">
+          <svg width="60" height="60" viewBox="0 0 16 16" role="img" aria-label="Pixel avatar" shape-rendering="crispEdges">
             <g fill="#333">
               <rect x="5" y="2" width="6" height="1" />
               <rect x="4" y="3" width="8" height="5" />
@@ -59,17 +59,17 @@ const profile = [
             <g fill="#e6e2d6"><rect x="6" y="5" width="1" height="1" /><rect x="9" y="5" width="1" height="1" /></g>
           </svg>
         </div>
-        <dl class="m-0 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-[15px]">
+        <dl class="m-0 grid min-w-0 flex-1 grid-cols-[auto_minmax(0,1fr)] max-[419px]:basis-[180px] gap-x-3.5 gap-y-2 text-sm sm:text-[15px]">
           {
             profile.map(([k, v]) => (
               <>
                 <dt class="text-ink-2">{k}:</dt>
-                <dd class="m-0 font-semibold">{v}</dd>
+                <dd class="m-0 font-semibold wrap-anywhere">{v}</dd>
               </>
             ))
           }
           <dt class="text-ink-2">Status:</dt>
-          <dd class="m-0 flex items-center gap-2 font-semibold">
+          <dd class="m-0 flex min-w-0 items-center gap-2 font-semibold wrap-anywhere">
             <span aria-hidden="true" class="size-2.5 border-2 border-ink bg-accent"></span>Building
           </dd>
         </dl>
