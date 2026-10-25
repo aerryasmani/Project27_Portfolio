@@ -44,4 +44,15 @@ test.describe('Home', () => {
     await expect(work.locator('[data-cat]:not([data-cat="Automation"]):visible')).toHaveCount(0);
     await expect(work.locator('[data-count]')).toHaveText(String(shown).padStart(2, '0'));
   });
+
+  test('Home - 003 | Section links scroll without a #hash in the URL', async ({ page, baseURL }) => {
+    await page.getByRole('navigation', { name: 'Primary' }).getByRole('link', { name: '[ Stack ]' }).click();
+    await expect(page.locator('section#stack')).toBeInViewport();
+    await expect(page).toHaveURL(`${baseURL}/`);
+
+    // Shared deep links still land on the section, then the URL is tidied
+    await page.goto('/#contact');
+    await expect(page.locator('section#contact')).toBeInViewport();
+    await expect(page).toHaveURL(`${baseURL}/`);
+  });
 });

@@ -14,7 +14,7 @@ const slug = (t: string) => `tab-${t.toLowerCase().replace(/\W+/g, '-')}`;
 ---
 
 <pixel-tabs class="block">
-  <div role="tablist" aria-label={label} class="flex flex-wrap">
+  <div role="tablist" aria-label={label} class="flex flex-wrap pb-0.5 pl-0.5">
     {
       tabs.map((t) => (
         <Tab

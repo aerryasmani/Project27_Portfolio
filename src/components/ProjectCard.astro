@@ -20,8 +20,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
       <h3 class="px m-0 text-[22px]">{p.name}</h3>
       <p class="m-0 text-[15px] leading-[1.55] text-ink-body">{p.desc}</p>
       <p class="m-0 text-[13px] text-ink-2">{p.stack}</p>
-      <div class="mt-auto pt-2 text-sm font-semibold">
-        <a href={p.href}>{p.link}<span class="sr-only"> — {p.name}</span> →</a>
+      <div class="mt-auto text-sm font-semibold">
+        <a href={p.href} class="inline-flex min-h-11 items-center">{p.link}<span class="sr-only"> — {p.name}</span>&nbsp;→</a>
       </div>
     </div>
   </article>

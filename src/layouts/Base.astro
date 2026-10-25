@@ -17,6 +17,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#F2EEE3" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -41,13 +42,44 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <div class="frame min-h-screen px-4 pt-6 pb-12 sm:px-6">
-      <div class="mx-auto flex max-w-[1180px] flex-col gap-section">
+      <div class="mx-auto flex max-w-[1180px] flex-col gap-14 sm:gap-section">
         <Nav />
-        <main id="main" class="flex flex-col gap-section">
+        <main id="main" class="flex flex-col gap-14 sm:gap-section">
           <slot />
         </main>
         <Footer />
       </div>
     </div>
+
+    <script>
+      // Same-page section links scroll (and move focus) without writing #section into the
+      // address bar. Incoming deep links like /#stack still land, then the URL is tidied.
+      const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+      const cleanUrl = () => history.replaceState(null, '', location.pathname + location.search);
+
+      document.addEventListener('click', (e) => {
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        const link = (e.target as Element).closest<HTMLAnchorElement>('a[href*="#"]');
+        if (!link) return;
+        const url = new URL(link.href);
+        if (url.origin !== location.origin || url.pathname !== location.pathname || !url.hash) return;
+        const target = document.getElementById(decodeURIComponent(url.hash.slice(1)));
+        if (!target) return;
+
+        e.preventDefault();
+        target.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+        target.setAttribute('tabindex', '-1');
+        target.focus({ preventScroll: true });
+        cleanUrl();
+      });
+
+      // Wait for the browser to scroll to the target first, then drop the hash.
+      const tidyHash = () => {
+        if (location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)))) cleanUrl();
+      };
+      if (document.readyState === 'complete') tidyHash();
+      else addEventListener('load', tidyHash, { once: true });
+      addEventListener('hashchange', tidyHash);
+    </script>
   </body>
 </html>

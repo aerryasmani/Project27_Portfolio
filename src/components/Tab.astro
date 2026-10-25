@@ -11,8 +11,8 @@ const { href, on = false, class: className, ...rest } = Astro.props;
 const Tag = href ? 'a' : 'button';
 
 const classes = [
-  'inline-flex min-h-11 cursor-pointer items-center border-2 border-ink px-4',
-  '-ml-0.5 first:ml-0 font-body text-sm font-semibold text-ink no-underline',
+  'inline-flex min-h-11 flex-auto cursor-pointer items-center justify-center border-2 border-ink px-3 sm:flex-none sm:px-4',
+  '-mb-0.5 -ml-0.5 font-body text-sm font-semibold text-ink no-underline',
   'hover:bg-surface-2 hover:text-ink aria-selected:bg-accent',
   on ? 'bg-accent hover:bg-accent' : 'bg-surface',
   className,

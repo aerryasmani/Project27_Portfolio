@@ -35,7 +35,7 @@ const profile = [
         I turn manual test suites into green pipelines — from empty repo to Playwright + Jenkins, one vertical slice at a
         time.
       </p>
-      <div class="flex flex-wrap gap-4">
+      <div class="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:gap-4">
         <PixelButton href="#work" variant="primary">View work</PixelButton>
         <PixelButton href="#contact">Get in touch</PixelButton>
       </div>
@@ -78,7 +78,7 @@ const profile = [
   <!-- STATS -->
   <section aria-label="Highlights" class="flex flex-col gap-5">
     <div class="rule"></div>
-    <div class="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-6">
+    <div class="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-[repeat(auto-fit,minmax(220px,1fr))] sm:gap-6">
       {stats.map((s) => <Stat {...s} />)}
     </div>
     <div class="rule"></div>
@@ -142,9 +142,9 @@ const profile = [
   <!-- CONTACT -->
   <section id="contact" class="flex scroll-mt-6 justify-center">
     <WindowCard title="SYSTEM MESSAGE" heading close class="w-full max-w-[720px]">
-      <div class="flex flex-col gap-5 px-6 py-7">
+      <div class="flex flex-col gap-5 px-4 py-6 sm:px-6 sm:py-7">
         <div class="flex items-start gap-4">
-          <svg width="40" height="40" viewBox="0 0 10 10" aria-hidden="true" shape-rendering="crispEdges" class="flex-none">
+          <svg width="40" height="40" viewBox="0 0 10 10" aria-hidden="true" shape-rendering="crispEdges" class="size-8 flex-none sm:size-10">
             <path
               d="M5 0h0v1h1v2h1v2h1v2h1v2h1v1H0V9h1V7h1V5h1V3h1V1h1z"
               fill="#f5c400"
@@ -161,7 +161,7 @@ const profile = [
             </p>
           </div>
         </div>
-        <div class="flex flex-wrap gap-3.5">
+        <div class="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:gap-3.5">
           <PixelButton href={links.email} variant="primary">Email me</PixelButton>
           <PixelButton href={links.github}>GitHub</PixelButton>
           <PixelButton href={links.linkedin}>LinkedIn</PixelButton>

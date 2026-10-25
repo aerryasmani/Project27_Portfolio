@@ -66,6 +66,10 @@
     outline: 3px solid var(--text);
     outline-offset: 3px;
   }
+  /* Sections focused by in-page navigation — no box around the whole section */
+  [tabindex='-1']:focus-visible {
+    outline: none;
+  }
   .skip-link {
     position: absolute;
     left: 16px;
@@ -129,9 +133,20 @@
     transform: translate(-6px, -6px);
     transition: transform 0.12s steps(2);
   }
-  .pixel-shadow:hover .lift,
   .pixel-shadow:focus-within .lift {
     transform: translate(-3px, -3px);
+  }
+  /* Hover only on real pointers — avoids a "stuck" lift after a tap on phones */
+  @media (hover: hover) {
+    .pixel-shadow:hover .lift {
+      transform: translate(-3px, -3px);
+    }
+  }
+  /* Phones: offset the wrapper so the lifted card lines up with the 16px gutter */
+  @media (max-width: 639px) {
+    .pixel-shadow {
+      margin-left: 6px;
+    }
   }
 
   .blink {
