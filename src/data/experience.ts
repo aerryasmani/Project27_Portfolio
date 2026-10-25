@@ -8,7 +8,6 @@ export interface Job {
 
 // Dates, titles and summaries for Iscistech, VireServe and Espl come from the
 // previous site's career timeline.
-// TODO: confirm VireServe / Espl dates — both start MAR 2021 and overlap.
 export const experience: Job[] = [
   {
     dates: 'JUL 2026 — NOW',

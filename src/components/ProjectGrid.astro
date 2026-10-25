@@ -2,7 +2,7 @@
 import ProjectCard from './ProjectCard.astro';
 import SectionHeader from './SectionHeader.astro';
 import Tabs from './Tabs.astro';
-import { tabsFor, type Project } from '../data/projects';
+import { projectTabs, type Project } from '../data/projects';
 
 interface Props {
   id: string;
@@ -18,7 +18,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 <section id={id} class="scroll-mt-6">
 <project-grid class="flex flex-col gap-7">
   <SectionHeader title={title}><span aria-live="polite"><span data-count>{pad(projects.length)}</span> ITEMS</span></SectionHeader>
-  <Tabs tabs={tabsFor(projects)} label="Filter projects" controls={gridId} />
+  <Tabs tabs={projectTabs} label="Filter projects" controls={gridId} />
   <div
     id={gridId}
     role="tabpanel"
@@ -27,7 +27,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
   >
     {projects.map((p, i) => <ProjectCard project={p} index={i + 1} />)}
   </div>
-  <slot />
 </project-grid>
 </section>
 

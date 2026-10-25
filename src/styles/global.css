@@ -4,7 +4,7 @@
   Design tokens — heiyoaerry.one 2027.
   Font pairs — swap the three --display / --body / --dw lines in :root
   (also update the Google Fonts URL in src/layouts/Base.astro):
-    'Pixelify Sans' / 'Space Mono'    / 700   (default)
+    'Pixelify Sans' / 'Geist Mono'    / 700   (default; body loads 400/500/600 only)
     'Press Start 2P' / 'JetBrains Mono' / 400
     'Jersey 10'      / 'Geist Mono'     / 400
     'DotGothic16'    / 'Geist Mono'     / 400
@@ -22,7 +22,7 @@
   --tick: #9a968c;
 
   --display: 'Pixelify Sans', monospace;
-  --body: 'Space Mono', monospace;
+  --body: 'Geist Mono', monospace;
   --dw: 700;
 }
 
@@ -74,7 +74,7 @@
     padding: 8px 14px;
     background: var(--accent);
     border: 2px solid var(--text);
-    font-weight: 700;
+    font-weight: 600;
     text-decoration: none;
   }
   .skip-link:focus {

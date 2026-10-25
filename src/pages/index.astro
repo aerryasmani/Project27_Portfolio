@@ -7,7 +7,7 @@ import ProjectGrid from '../components/ProjectGrid.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import ExperienceRow from '../components/ExperienceRow.astro';
 import Chip from '../components/Chip.astro';
-import { featured } from '../data/projects';
+import { projects } from '../data/projects';
 import { experience } from '../data/experience';
 import { stack } from '../data/stack';
 import { stats } from '../data/stats';
@@ -29,7 +29,7 @@ const profile = [
   <!-- HERO -->
   <section id="top" class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] items-end gap-12">
     <div class="flex flex-col gap-6">
-      <p class="m-0 text-sm font-bold tracking-[0.08em] text-ink-2">QA AUTOMATION ENGINEER · KUALA LUMPUR · GMT+8</p>
+      <p class="m-0 text-sm font-semibold tracking-[0.08em] text-ink-2">QA AUTOMATION ENGINEER · KUALA LUMPUR · GMT+8</p>
       <h1 class="px m-0 text-[clamp(56px,9vw,112px)] leading-[0.92]">AERRY<br />ASMANI</h1>
       <p class="m-0 max-w-[34ch] text-lg leading-normal sm:text-[22px]">
         I turn manual test suites into green pipelines — from empty repo to Playwright + Jenkins, one vertical slice at a
@@ -42,7 +42,7 @@ const profile = [
     </div>
 
     <WindowCard title="USER PROFILE" class="rounded-[2px]">
-      <span slot="badge" class="border-2 border-ink bg-surface px-2 py-0.5 text-[13px] font-bold">ID: HEIYOJUN</span>
+      <span slot="badge" class="border-2 border-ink bg-surface px-2 py-0.5 text-[13px] font-semibold">ID: HEIYOJUN</span>
       <div class="flex flex-wrap items-center gap-5 p-5">
         <div class="flex size-28 flex-none items-center justify-center border-2 border-ink bg-surface-2">
           <svg width="80" height="80" viewBox="0 0 16 16" role="img" aria-label="Pixel avatar" shape-rendering="crispEdges">
@@ -62,12 +62,12 @@ const profile = [
             profile.map(([k, v]) => (
               <>
                 <dt class="text-ink-2">{k}:</dt>
-                <dd class="m-0 font-bold">{v}</dd>
+                <dd class="m-0 font-semibold">{v}</dd>
               </>
             ))
           }
           <dt class="text-ink-2">Status:</dt>
-          <dd class="m-0 flex items-center gap-2 font-bold">
+          <dd class="m-0 flex items-center gap-2 font-semibold">
             <span aria-hidden="true" class="size-2.5 border-2 border-ink bg-accent"></span>Building
           </dd>
         </dl>
@@ -85,9 +85,7 @@ const profile = [
   </section>
 
   <!-- WORK -->
-  <ProjectGrid id="work" title="SELECTED WORK" projects={featured}>
-    <a href="/projects" class="self-start text-sm font-bold">All projects →</a>
-  </ProjectGrid>
+  <ProjectGrid id="work" title="SELECTED WORK" projects={projects} />
 
   <!-- EXPERIENCE -->
   <section id="experience" class="flex scroll-mt-6 flex-col gap-7">
@@ -121,7 +119,7 @@ const profile = [
   <!-- WRITING -->
   <section id="writing" class="flex scroll-mt-6 flex-col gap-7">
     <SectionHeader title="WRITING">
-      <a href={links.medium} class="text-sm font-bold">medium.com/@BukanJun →</a>
+      <a href={links.medium} class="text-sm font-semibold">medium.com/@BukanJun →</a>
     </SectionHeader>
     <div class="flex flex-col border-t-2 border-ink">
       {
@@ -130,7 +128,7 @@ const profile = [
             href={p.href}
             class="flex flex-wrap justify-between gap-x-6 gap-y-2 border-b-2 border-ink px-1 py-[18px] no-underline hover:bg-surface-2"
           >
-            <span class="text-lg font-bold">{p.title}</span>
+            <span class="text-lg font-semibold">{p.title}</span>
             <span class="text-sm text-ink-2">
               {p.date}
               {p.minutes && ` · ${p.minutes} min`}
