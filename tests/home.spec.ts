@@ -6,7 +6,7 @@ test.describe('Home', () => {
   });
 
   test('Home - 001 | Hero, nav and all sections render', async ({ page }) => {
-    await expect(page.getByRole('heading', { level: 1, name: /AERRY\s*ASMANI/ })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: /I break things before users do/ })).toBeVisible();
 
     const nav = page.getByRole('navigation', { name: 'Primary' });
     for (const label of ['Work', 'Experience', 'Stack', 'Writing', 'Contact']) {
