@@ -6,7 +6,7 @@ interface Props {
 }
 
 const { variant = 'used' } = Astro.props;
-const fill = { daily: 'bg-accent', regular: 'bg-surface-3', used: 'bg-surface' }[variant];
+const fill = { daily: 'bg-accent text-on-accent', regular: 'bg-surface-3', used: 'bg-surface' }[variant];
 ---
 
 <span class:list={['inline-flex h-[34px] items-center gap-2 rounded-chip border-2 border-ink px-3.5 text-sm font-medium', fill]}>

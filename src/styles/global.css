@@ -11,7 +11,9 @@
     'Silkscreen'     / 'IBM Plex Mono'  / 700
 */
 :root {
-  --accent: #ffd23f; /* safety yellow (was #00FF00). Fills only — never text on cream; keep ≥4.5:1 vs --text. */
+  --accent: #2b4cff; /* Klein ink blue. Fills only. */
+  --on-accent: #ffffff; /* ALL text/icons on accent fills (5.9:1) */
+  --accent-lite: #8fa2ff; /* accent on dark surfaces (terminal text, checks, bars) */
   --bg: #f2eee3;
   --surface: #f7f5ef;
   --surface-2: #e6e2d6;
@@ -29,6 +31,8 @@
 /* Tailwind theme reads the same variables, so utilities and raw CSS agree. */
 @theme inline {
   --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-accent-lite: var(--accent-lite);
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
@@ -77,6 +81,7 @@
     z-index: 10;
     padding: 8px 14px;
     background: var(--accent);
+    color: var(--on-accent);
     border: 2px solid var(--text);
     font-weight: 600;
     text-decoration: none;
