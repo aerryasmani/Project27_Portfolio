@@ -70,9 +70,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         cleanUrl();
       });
 
-      // Wait for the browser to scroll to the target first, then drop the hash.
+      // Land on the target ourselves (dropping the hash can cancel the browser's own
+      // smooth fragment scroll mid-flight), then drop the hash.
       const tidyHash = () => {
-        if (location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)))) cleanUrl();
+        const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+        if (!target) return;
+        target.scrollIntoView({ behavior: 'instant' });
+        cleanUrl();
       };
       if (document.readyState === 'complete') tidyHash();
       else addEventListener('load', tidyHash, { once: true });
