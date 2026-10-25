@@ -14,6 +14,7 @@
   --accent: #2b4cff; /* Klein ink blue. Fills only. */
   --on-accent: #ffffff; /* ALL text/icons on accent fills (5.9:1) */
   --accent-lite: #8fa2ff; /* accent on dark surfaces (terminal text, checks, bars) */
+  --pfp: #62b64b; /* avatar green — small echoes of the avatar only (status dot); never text */
   --bg: #f2eee3;
   --surface: #f7f5ef;
   --surface-2: #e6e2d6;
@@ -33,6 +34,7 @@
   --color-accent: var(--accent);
   --color-on-accent: var(--on-accent);
   --color-accent-lite: var(--accent-lite);
+  --color-pfp: var(--pfp);
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
