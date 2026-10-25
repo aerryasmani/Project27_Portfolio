@@ -6,8 +6,8 @@ interface Props {
 const { title } = Astro.props;
 ---
 
-<div class="flex items-end gap-4">
+<div class="flex flex-wrap items-end gap-x-4 gap-y-1">
   <h2 class="px m-0 text-2xl sm:text-[32px]">{title}</h2>
   <span class="leader" aria-hidden="true"></span>
-  <span class="whitespace-nowrap text-right text-[13px] text-ink-2"><slot /></span>
+  <span class="ml-auto whitespace-nowrap text-right text-[13px] text-ink-2"><slot /></span>
 </div>

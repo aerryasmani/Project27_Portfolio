@@ -27,13 +27,14 @@ const profile = [
   description="Aerry Asmani, Senior QA Automation Engineer in Kuala Lumpur. Playwright, Jenkins and test infrastructure — from empty repo to green pipeline."
 >
   <!-- HERO -->
-  <section id="top" class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] items-end gap-12">
-    <div class="flex flex-col gap-6">
+  <section id="top" class="grid grid-cols-1 items-end gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
+    <div class="flex min-w-0 flex-col gap-6">
       <p class="m-0 text-sm font-semibold tracking-[0.08em] text-ink-2">QA AUTOMATION ENGINEER · KUALA LUMPUR · GMT+8</p>
-      <h1 class="px m-0 max-w-[18ch] text-[clamp(36px,5.2vw,64px)] leading-[1.02] text-balance">
-        I break things before users do, then design the fixes that follow.
+      <h1 class="px m-0 text-[clamp(40px,5vw,72px)] leading-[1.02] tracking-[-0.015em]">
+        <span class="block sm:whitespace-nowrap">I break things</span>
+        <span class="block sm:whitespace-nowrap">before users do<span class="text-accent">.</span></span>
       </h1>
-      <p class="m-0 max-w-[48ch] text-base leading-relaxed text-pretty text-ink-body sm:text-lg">
+      <p class="m-0 max-w-[52ch] text-base leading-relaxed text-balance text-ink-body sm:text-lg">
         Mostly with Playwright, CI/CD pipelines and a worrying amount of coffee.
       </p>
       <div class="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:gap-4">
@@ -42,7 +43,7 @@ const profile = [
       </div>
     </div>
 
-    <WindowCard title="USER PROFILE" class="rounded-[2px]">
+    <WindowCard title="USER PROFILE" class="w-full max-w-[560px] rounded-[2px] lg:max-w-none">
       <span slot="badge" class="border-2 border-ink bg-surface px-2 py-0.5 text-[13px] font-semibold">ID: HEIYOJUN</span>
       <div class="flex flex-wrap items-center gap-5 p-5">
         <div class="flex size-28 flex-none items-center justify-center border-2 border-ink bg-surface-2">
