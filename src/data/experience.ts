@@ -14,7 +14,7 @@ export const experience: Job[] = [
     company: 'NETS MALAYSIA',
     role: 'Senior QA Automation Engineer',
     summary:
-      'First dedicated automation engineer. Took a fully manual regression process to an automated UI and API suite that runs on schedule, with database checks built in.',
+      'First dedicated automation engineer. Took a fully manual process and an empty repo to a Selenium smoke suite and REST API tests, running end-to-end on a scheduled Linux pipeline.',
     current: true,
   },
   {
