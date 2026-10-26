@@ -15,7 +15,7 @@ const { job } = Astro.props;
     <span class:list={['self-start border-2 border-ink px-2 py-0.5 text-[13px] font-semibold', job.current && 'bg-accent text-on-accent']}>
       {job.dates}
     </span>
-    <span class="px text-xl">{job.company}</span>
+    <span class="text-lg font-semibold tracking-[0.04em] uppercase">{job.company}</span>
   </div>
   <div class="flex flex-col gap-2">
     <strong class="text-base font-semibold">{job.role}</strong>
