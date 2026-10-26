@@ -1,0 +1,119 @@
+<!doctype html>
+<!-- Share-preview card (1200x630). Rendered to public/og-image.png by `npm run og`. -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@700&family=Geist+Mono:wght@500;600&display=block"
+    />
+    <style>
+      :root {
+        --bg: #f2eee3;
+        --surface: #f7f5ef;
+        --text: #333333;
+        --accent: #2b4cff;
+        --tick: #9a968c;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+      }
+      body {
+        position: relative;
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: 'Geist Mono', monospace;
+        /* Ruler ticks on all four edges, same as the site's .frame */
+        background-image:
+          repeating-linear-gradient(90deg, var(--tick) 0 2px, transparent 2px 16px),
+          repeating-linear-gradient(90deg, var(--tick) 0 2px, transparent 2px 16px),
+          repeating-linear-gradient(180deg, var(--tick) 0 2px, transparent 2px 16px),
+          repeating-linear-gradient(180deg, var(--tick) 0 2px, transparent 2px 16px);
+        background-size: 100% 12px, 100% 12px, 12px 100%, 12px 100%;
+        background-position: top left, bottom left, top left, top right;
+        background-repeat: no-repeat;
+      }
+      .content {
+        position: absolute;
+        inset: 72px 80px;
+        display: flex;
+        flex-direction: column;
+      }
+      .badge {
+        align-self: flex-start;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 16px;
+        border: 3px solid var(--text);
+        background: var(--surface);
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+      .badge .square {
+        width: 16px;
+        height: 16px;
+        background: var(--accent);
+      }
+      h1 {
+        margin: 44px 0 0;
+        font-family: 'Pixelify Sans', monospace;
+        font-weight: 700;
+        font-size: 112px;
+        line-height: 1.02;
+        letter-spacing: -0.015em;
+      }
+      h1 > span {
+        display: block;
+        white-space: nowrap;
+      }
+      .dot {
+        color: var(--accent);
+      }
+      .domain {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        font-size: 28px;
+        font-weight: 600;
+      }
+      .avatar {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 168px;
+        height: 168px;
+        border: 3px solid var(--text);
+        background: #111;
+        box-shadow: 10px 10px 0 var(--text);
+        image-rendering: pixelated;
+      }
+      .avatar img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      <div class="badge"><span class="square"></span>QA Automation Engineer · Kuala Lumpur, MY</div>
+      <h1>
+        <span>I break things</span>
+        <span>before users do<span class="dot">.</span></span>
+      </h1>
+      <div class="domain">heiyoaerry.one</div>
+      <div class="avatar"><img src="../public/avatar.svg" alt="" /></div>
+    </div>
+  </body>
+</html>

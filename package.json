@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "test": "playwright test"
+    "test": "playwright test",
+    "og": "node scripts/make-og.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
