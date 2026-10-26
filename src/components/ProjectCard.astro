@@ -21,7 +21,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
       <p class="m-0 text-[15px] leading-[1.55] text-ink-body">{p.desc}</p>
       <p class="m-0 text-[13px] text-ink-2">{p.stack}</p>
       <div class="mt-auto text-sm font-semibold">
-        <a href={p.href} class="inline-flex min-h-11 items-center">{p.link}<span class="sr-only"> — {p.name}</span>&nbsp;→</a>
+        <a href={p.href} class="inline-flex min-h-6 items-center py-1 max-sm:min-h-11">{p.link}<span class="sr-only"> — {p.name}</span>&nbsp;<span aria-hidden="true">→</span></a>
       </div>
     </div>
   </article>

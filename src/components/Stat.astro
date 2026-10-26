@@ -2,12 +2,23 @@
 interface Props {
   value: string;
   caption: string;
+  /** Spoken form when the value relies on a symbol (e.g. "0→1" → "0 to 1") */
+  label?: string;
 }
 
-const { value, caption } = Astro.props;
+const { value, caption, label } = Astro.props;
 ---
 
 <div class="flex flex-col gap-1.5">
-  <span class="px text-4xl sm:text-5xl">{value}</span>
+  {
+    label ? (
+      <span class="px text-4xl sm:text-5xl">
+        <span aria-hidden="true">{value}</span>
+        <span class="sr-only">{label}</span>
+      </span>
+    ) : (
+      <span class="px text-4xl sm:text-5xl">{value}</span>
+    )
+  }
   <span class="text-sm text-ink-2">{caption}</span>
 </div>

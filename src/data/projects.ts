@@ -32,7 +32,7 @@ export const projects: Project[] = [
   {
     kind: 'AUTOMATION',
     cat: 'Automation',
-    name: 'QA_jommakan',
+    name: 'QA_JomMakan',
     desc: 'Playwright end-to-end tests for JomMakan.',
     stack: 'Playwright · JavaScript',
     href: 'https://github.com/aerryasmani/QA_JomMakan',

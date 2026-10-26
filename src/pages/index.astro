@@ -96,7 +96,13 @@ const profile = [
 
   <!-- STACK -->
   <section id="stack" class="flex scroll-mt-6 flex-col gap-7">
-    <SectionHeader title="STACK"><span aria-hidden="true">■ DAILY ▒ REGULAR □ USED</span></SectionHeader>
+    <SectionHeader title="STACK">
+      <span aria-hidden="true" class="inline-flex items-center gap-3">
+        <span class="inline-flex items-center gap-1.5"><span class="size-2.5 border-2 border-ink bg-ink"></span>DAILY</span>
+        <span class="inline-flex items-center gap-1.5"><span class="size-2.5 border-2 border-ink bg-surface-3"></span>REGULAR</span>
+        <span class="inline-flex items-center gap-1.5"><span class="size-2.5 border-2 border-ink bg-surface"></span>USED</span>
+      </span>
+    </SectionHeader>
     <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-x-8 gap-y-7">
       {
         stack.map((g) => (
@@ -118,7 +124,7 @@ const profile = [
   <!-- WRITING -->
   <section id="writing" class="flex scroll-mt-6 flex-col gap-7">
     <SectionHeader title="WRITING">
-      <a href={links.medium} class="text-sm font-semibold">medium.com/@BukanJun →</a>
+      <a href={links.medium} class="inline-flex min-h-6 items-center py-1 text-sm font-semibold max-sm:min-h-11">medium.com/@BukanJun&nbsp;<span aria-hidden="true">→</span></a>
     </SectionHeader>
     <div class="flex flex-col border-t-2 border-ink">
       {
@@ -140,7 +146,7 @@ const profile = [
 
   <!-- CONTACT -->
   <section id="contact" class="flex scroll-mt-6 justify-center">
-    <WindowCard title="SYSTEM MESSAGE" heading close class="w-full max-w-[720px]">
+    <WindowCard title="SYSTEM MESSAGE" heading class="w-full max-w-[720px]">
       <div class="flex flex-col gap-5 px-4 py-6 sm:px-6 sm:py-7">
         <div class="flex items-start gap-4">
           <svg width="40" height="40" viewBox="0 0 10 10" aria-hidden="true" shape-rendering="crispEdges" class="size-8 flex-none sm:size-10">
