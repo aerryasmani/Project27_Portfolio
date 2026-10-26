@@ -1,4 +1,6 @@
 ---
+import Badge from './Badge.astro';
+
 const year = new Date().getFullYear();
 const repo = 'aerryasmani/Project27_Portfolio';
 const workflowUrl = `https://github.com/${repo}/actions/workflows/e2e.yml`;
@@ -16,9 +18,13 @@ const linkClass = 'inline-flex min-h-6 items-center gap-1.5 py-1 align-baseline 
     class="flex flex-col items-start gap-2.5 text-xs text-ink-2 sm:text-[13px] min-[1100px]:grid min-[1100px]:grid-cols-[1fr_auto_1fr] min-[1100px]:items-center min-[1100px]:gap-4"
   >
     <p class="m-0">© {year} Aerry Asmani<span class="blink" aria-hidden="true">_</span></p>
-    <!-- Server-rendered fallback; the script below swaps in the latest E2E run when the API answers. -->
+    <!-- E2E status: same Badge as the hero eyebrow, as a link. Server-rendered fallback (UNKNOWN);
+         the script below sets the state colour, text and link from the latest run. -->
     <p class="m-0 min-[1100px]:justify-self-center">
-      <a id="e2e-status" href={workflowUrl} class={linkClass} data-repo={repo}>Tested with Playwright</a>
+      <Badge href={workflowUrl} id="e2e-status" data-repo={repo}>
+        <span aria-hidden="true" data-square class="size-2.5 flex-none border-2 border-ink bg-surface"></span>
+        <span aria-live="polite" data-text>Tested with Playwright</span>
+      </Badge>
     </p>
     <!-- Each half is nowrap, so the only break is before the "·", used only when one line doesn't fit. Spaces are explicit: Astro strips inter-tag whitespace. -->
     <p class="tagline m-0 min-[1100px]:justify-self-end">
@@ -33,40 +39,58 @@ const linkClass = 'inline-flex min-h-6 items-center gap-1.5 py-1 align-baseline 
 </footer>
 
 <script>
-  // Latest completed E2E run → "✓ E2E suite passing · 2 hours ago" (or failing).
-  // Cached for 10 minutes per tab; any failure (offline, 403 rate limit, no runs yet) keeps the fallback.
-  type Run = { conclusion: string | null; updated_at: string; html_url: string };
+  // Latest E2E run → state badge. Colour lives in the (aria-hidden) square; the text says the state.
+  //   PASS #3FB950 · FAIL #E5534B · RUNNING / STALE / CANCELLED #F2C94C · UNKNOWN (fallback) unfilled
+  // Cached per tab: 10 minutes, or 1 minute while a run is in progress. Any fetch failure keeps the fallback.
+  type Run = { status: string; conclusion: string | null; updated_at: string; html_url: string };
+  type State = { colour: string; text: string; href: string };
+
   const CACHE_KEY = 'e2e-status';
-  const TTL = 10 * 60 * 1000;
+  const STALE_AFTER = 36 * 3600 * 1000; // daily schedule + slack: a missed run means stale
+  const COLOURS = { pass: '#3FB950', fail: '#E5534B', warn: '#F2C94C' };
 
-  const link = document.getElementById('e2e-status') as HTMLAnchorElement | null;
+  const badge = document.getElementById('e2e-status') as HTMLAnchorElement | null;
+  const square = badge?.querySelector<HTMLElement>('[data-square]');
+  const label = badge?.querySelector<HTMLElement>('[data-text]');
 
-  const relative = (iso: string) => {
-    const secs = (new Date(iso).getTime() - Date.now()) / 1000;
-    const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
-    for (const [unit, size] of [['day', 86400], ['hour', 3600], ['minute', 60]] as const) {
-      if (Math.abs(secs) >= size) return rtf.format(Math.round(secs / size), unit);
+  const ago = (iso: string) => {
+    const mins = Math.floor((Date.now() - new Date(iso).getTime()) / 60000);
+    if (mins < 1) return 'just now';
+    if (mins < 60) return `${mins}m ago`;
+    if (mins < 1440) return `${Math.floor(mins / 60)}h ago`;
+    return `${Math.floor(mins / 1440)}d ago`;
+  };
+
+  const stateFor = (run: Run): State => {
+    const href = run.html_url;
+    if (run.status !== 'completed') return { colour: COLOURS.warn, text: 'E2E suite running…', href };
+    const when = ago(run.updated_at);
+    if (run.conclusion === 'failure') return { colour: COLOURS.fail, text: `E2E suite failing · ${when}`, href };
+    if (run.conclusion === 'success') {
+      const stale = Date.now() - new Date(run.updated_at).getTime() > STALE_AFTER;
+      return stale
+        ? { colour: COLOURS.warn, text: `E2E suite stale · ${when}`, href }
+        : { colour: COLOURS.pass, text: `E2E suite passing · ${when}`, href };
     }
-    return 'just now';
+    return { colour: COLOURS.warn, text: `E2E suite cancelled · ${when}`, href }; // cancelled, timed_out, …
   };
 
   const render = (run: Run) => {
-    if (!link || (run.conclusion !== 'success' && run.conclusion !== 'failure')) return;
-    const passing = run.conclusion === 'success';
-    link.href = run.html_url;
-    link.replaceChildren();
-    const glyph = document.createElement('span');
-    glyph.setAttribute('aria-hidden', 'true');
-    glyph.textContent = passing ? '✓' : '✗';
-    link.append(glyph, `E2E suite ${passing ? 'passing' : 'failing'} · ${relative(run.updated_at)}`);
+    if (!badge || !square || !label) return;
+    const { colour, text, href } = stateFor(run);
+    badge.href = href;
+    square.classList.remove('border-2', 'border-ink', 'bg-surface');
+    square.style.background = colour;
+    label.textContent = text;
   };
 
   const readCache = (): Run | null => {
     try {
       const raw = sessionStorage.getItem(CACHE_KEY);
       if (!raw) return null;
-      const { at, run } = JSON.parse(raw);
-      return Date.now() - at < TTL ? run : null;
+      const { at, run } = JSON.parse(raw) as { at: number; run: Run };
+      const ttl = run.status === 'completed' ? 10 * 60 * 1000 : 60 * 1000;
+      return Date.now() - at < ttl ? run : null;
     } catch {
       return null;
     }
@@ -81,12 +105,12 @@ const linkClass = 'inline-flex min-h-6 items-center gap-1.5 py-1 align-baseline 
   };
 
   (async () => {
-    if (!link) return;
+    if (!badge) return;
     const cached = readCache();
     if (cached) return render(cached);
     try {
       const res = await fetch(
-        `https://api.github.com/repos/${link.dataset.repo}/actions/workflows/e2e.yml/runs?per_page=1&status=completed`,
+        `https://api.github.com/repos/${badge.dataset.repo}/actions/workflows/e2e.yml/runs?per_page=1`,
         { headers: { Accept: 'application/vnd.github+json' } },
       );
       if (!res.ok) return;

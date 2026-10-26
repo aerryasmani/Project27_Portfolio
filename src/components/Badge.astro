@@ -1,19 +1,25 @@
 ---
 // Square label (radius 0). Shape rule: 0 = containers/badges, 4px = interactive, pill = skill tags (Chip).
-interface Props {
-  variant?: 'default' | 'accent';
-  class?: string;
-}
+// With `href` it renders as a link with the identical look (e.g. the footer E2E status).
+import type { HTMLAttributes } from 'astro/types';
 
-const { variant = 'default', class: className } = Astro.props;
+type Props = HTMLAttributes<'span'> & {
+  variant?: 'default' | 'accent';
+  href?: string;
+};
+
+const { variant = 'default', href, class: className, ...rest } = Astro.props;
+const Tag = href ? 'a' : 'span';
 ---
 
-<span
+<Tag
+  href={href}
   class:list={[
     'inline-flex items-center gap-2 border-2 border-ink px-2.5 py-1 text-[13px] leading-none font-semibold tracking-[0.06em] whitespace-nowrap uppercase',
     variant === 'accent' ? 'bg-accent text-on-accent' : 'bg-surface text-ink',
     className,
   ]}
+  {...rest}
 >
   <slot />
-</span>
+</Tag>
