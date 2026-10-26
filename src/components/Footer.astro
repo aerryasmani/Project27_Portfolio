@@ -1,18 +1,90 @@
 ---
 const year = new Date().getFullYear();
+const repo = 'aerryasmani/Project27_Portfolio';
+const workflowUrl = `https://github.com/${repo}/actions/workflows/e2e.yml`;
+const linkClass = 'inline-flex min-h-6 items-center gap-1.5 py-1 text-ink-2 max-sm:min-h-11';
 ---
 
 <footer class="flex flex-col gap-4 max-sm:mt-6">
   <div class="rule"></div>
-  <!-- Phones: stacked (4px, then 24px before the bug link). 640px+: one spaced row. -->
+  <!-- Phones: stacked (4px apart, then 24px before the bug link). 640px+: one spaced row. -->
   <div class="flex flex-col gap-1 text-[13px] text-ink-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
     <p class="m-0">© {year} Aerry Asmani<span class="blink" aria-hidden="true">_</span></p>
     <p class="m-0">Made with Coffee + overthinking</p>
+    <!-- Server-rendered fallback; the script below swaps in the latest E2E run when the API answers. -->
+    <p class="m-0">
+      <a id="e2e-status" href={workflowUrl} class={linkClass} data-repo={repo}>Tested with Playwright</a>
+    </p>
     <p class="m-0 mt-5 sm:mt-0">
-      <a
-        href="https://github.com/aerryasmani/Project27_Portfolio/issues/new?template=bug-report.yml"
-        class="inline-flex min-h-6 items-center py-1 text-ink-2 max-sm:min-h-11">Report a bug</a
-      >
+      <a href={`https://github.com/${repo}/issues/new?template=bug-report.yml`} class={linkClass}>Report a bug</a>
     </p>
   </div>
 </footer>
+
+<script>
+  // Latest completed E2E run → "✓ E2E suite passing · 2 hours ago" (or failing).
+  // Cached for 10 minutes per tab; any failure (offline, 403 rate limit, no runs yet) keeps the fallback.
+  type Run = { conclusion: string | null; updated_at: string; html_url: string };
+  const CACHE_KEY = 'e2e-status';
+  const TTL = 10 * 60 * 1000;
+
+  const link = document.getElementById('e2e-status') as HTMLAnchorElement | null;
+
+  const relative = (iso: string) => {
+    const secs = (new Date(iso).getTime() - Date.now()) / 1000;
+    const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+    for (const [unit, size] of [['day', 86400], ['hour', 3600], ['minute', 60]] as const) {
+      if (Math.abs(secs) >= size) return rtf.format(Math.round(secs / size), unit);
+    }
+    return 'just now';
+  };
+
+  const render = (run: Run) => {
+    if (!link || (run.conclusion !== 'success' && run.conclusion !== 'failure')) return;
+    const passing = run.conclusion === 'success';
+    link.href = run.html_url;
+    link.replaceChildren();
+    const glyph = document.createElement('span');
+    glyph.setAttribute('aria-hidden', 'true');
+    glyph.textContent = passing ? '✓' : '✗';
+    link.append(glyph, `E2E suite ${passing ? 'passing' : 'failing'} · ${relative(run.updated_at)}`);
+  };
+
+  const readCache = (): Run | null => {
+    try {
+      const raw = sessionStorage.getItem(CACHE_KEY);
+      if (!raw) return null;
+      const { at, run } = JSON.parse(raw);
+      return Date.now() - at < TTL ? run : null;
+    } catch {
+      return null;
+    }
+  };
+
+  const writeCache = (run: Run) => {
+    try {
+      sessionStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), run }));
+    } catch {
+      /* storage unavailable — just skip caching */
+    }
+  };
+
+  (async () => {
+    if (!link) return;
+    const cached = readCache();
+    if (cached) return render(cached);
+    try {
+      const res = await fetch(
+        `https://api.github.com/repos/${link.dataset.repo}/actions/workflows/e2e.yml/runs?per_page=1&status=completed`,
+        { headers: { Accept: 'application/vnd.github+json' } },
+      );
+      if (!res.ok) return;
+      const run: Run | undefined = (await res.json()).workflow_runs?.[0];
+      if (!run) return;
+      writeCache(run);
+      render(run);
+    } catch {
+      /* network error — keep the fallback */
+    }
+  })();
+</script>

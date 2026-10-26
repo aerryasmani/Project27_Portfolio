@@ -33,8 +33,7 @@ jobs:
       # Lockfile-exact install with no dependency install scripts (also set in .npmrc)
       - run: npm ci --ignore-scripts
       - run: npm run build
-      - run: npx playwright install --with-deps chromium
-      - run: npx playwright test
+      # Tests run in the separate E2E workflow (.github/workflows/e2e.yml)
       - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
           path: dist
