@@ -4,10 +4,11 @@ const year = new Date().getFullYear();
 
 <footer class="flex flex-col gap-4 max-sm:mt-6">
   <div class="rule"></div>
-  <div class="flex flex-col gap-1 text-[13px] text-ink-2">
-    <p class="m-0">© {year} Aerry Asmani · HeiyoJun<span class="blink" aria-hidden="true">_</span></p>
+  <!-- Phones: stacked (4px, then 24px before the bug link). 640px+: one spaced row. -->
+  <div class="flex flex-col gap-1 text-[13px] text-ink-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+    <p class="m-0">© {year} Aerry Asmani<span class="blink" aria-hidden="true">_</span></p>
     <p class="m-0">Made with Coffee + overthinking</p>
-    <p class="m-0 mt-5">
+    <p class="m-0 mt-5 sm:mt-0">
       <a
         href="https://github.com/aerryasmani/Project27_Portfolio/issues/new?template=bug-report.yml"
         class="inline-flex min-h-6 items-center py-1 text-ink-2 max-sm:min-h-11">Report a bug</a

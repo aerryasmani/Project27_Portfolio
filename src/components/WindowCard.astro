@@ -1,6 +1,8 @@
 ---
 interface Props {
   title: string;
+  /** What screen readers say instead of `title` (e.g. "WHOAMI" → "Who am I") */
+  spoken?: string;
   /** Render the title as a heading (h2) instead of a plain label */
   heading?: boolean;
   /** Decorative × in the title bar */
@@ -8,14 +10,25 @@ interface Props {
   class?: string;
 }
 
-const { title, heading = false, close = false, class: className } = Astro.props;
+const { title, spoken, heading = false, close = false, class: className } = Astro.props;
 const Title = heading ? 'h2' : 'span';
 ---
 
 <div class:list={['pixel-shadow dither', className]}>
   <div class="lift border-2 border-ink bg-surface">
     <div class="dither flex items-center justify-between border-b-2 border-ink bg-surface-3 px-3.5 py-2.5">
-      <Title class="px m-0 bg-surface-3 px-1 text-base sm:text-lg">{title}</Title>
+      <Title class="px m-0 bg-surface-3 px-1 text-base sm:text-lg">
+        {
+          spoken ? (
+            <>
+              <span aria-hidden="true">{title}</span>
+              <span class="sr-only">{spoken}</span>
+            </>
+          ) : (
+            title
+          )
+        }
+      </Title>
       <slot name="badge" />
       {
         close && (
