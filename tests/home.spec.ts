@@ -1,4 +1,14 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
+
+/** Site navigation: the tab row on 640px+, or the opened menu panel on phones. */
+async function siteNav(page: Page) {
+  const menuButton = page.getByRole('button', { name: /Menu/ });
+  if (await menuButton.isVisible()) {
+    await menuButton.click();
+    return page.getByRole('navigation', { name: 'Menu' });
+  }
+  return page.getByRole('navigation', { name: 'Primary' });
+}
 
 test.describe('Home', () => {
   test.beforeEach(async ({ page }) => {
@@ -8,7 +18,7 @@ test.describe('Home', () => {
   test('Home - 001 | Hero, nav and all sections render', async ({ page }) => {
     await expect(page.getByRole('heading', { level: 1, name: /I break things\s*before users do/ })).toBeVisible();
 
-    const nav = page.getByRole('navigation', { name: 'Primary' });
+    const nav = await siteNav(page);
     for (const label of ['Work', 'Experience', 'Stack', 'Writing', 'Contact']) {
       await expect(nav.getByRole('link', { name: `[ ${label} ]` })).toBeVisible();
     }
@@ -46,7 +56,7 @@ test.describe('Home', () => {
   });
 
   test('Home - 003 | Section links scroll without a #hash in the URL', async ({ page, baseURL }) => {
-    await page.getByRole('navigation', { name: 'Primary' }).getByRole('link', { name: '[ Stack ]' }).click();
+    await (await siteNav(page)).getByRole('link', { name: '[ Stack ]' }).click();
     await expect(page.locator('section#stack')).toBeInViewport();
     await expect(page).toHaveURL(`${baseURL}/`);
 
@@ -54,5 +64,31 @@ test.describe('Home', () => {
     await page.goto('/#contact');
     await expect(page.locator('section#contact')).toBeInViewport();
     await expect(page).toHaveURL(`${baseURL}/`);
+  });
+
+  test('Home - 004 | Mobile menu opens and closes', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'Menu button only exists below 640px');
+    const button = page.getByRole('button', { name: /Menu/ });
+    const panel = page.locator('#mobile-menu');
+    await expect(page.getByRole('navigation', { name: 'Primary' })).toBeHidden();
+
+    // Escape closes and returns focus to the button
+    await button.click();
+    await expect(button).toHaveAttribute('aria-expanded', 'true');
+    await expect(panel).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(panel).toBeHidden();
+    await expect(button).toBeFocused();
+
+    // × closes
+    await button.click();
+    await page.getByRole('button', { name: 'Close menu' }).click();
+    await expect(panel).toBeHidden();
+
+    // Tap outside closes
+    await button.click();
+    await page.locator('section#work').click({ position: { x: 5, y: 5 } });
+    await expect(panel).toBeHidden();
+    await expect(button).toHaveAttribute('aria-expanded', 'false');
   });
 });

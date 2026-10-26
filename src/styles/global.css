@@ -159,6 +159,18 @@
   .blink {
     animation: blink 1s steps(1) infinite;
   }
+
+  /* Mobile menu panel: two-frame pop when un-hidden */
+  .menu-pop {
+    animation: menu-pop 0.12s steps(2);
+  }
+}
+
+@keyframes menu-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
 }
 
 @keyframes blink {
@@ -171,7 +183,8 @@
   html {
     scroll-behavior: auto;
   }
-  .blink {
+  .blink,
+  .menu-pop {
     animation: none;
   }
   .lift {

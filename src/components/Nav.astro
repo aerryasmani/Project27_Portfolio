@@ -1,5 +1,6 @@
 ---
 import Tab from './Tab.astro';
+import WindowCard from './WindowCard.astro';
 
 const links = [
   { href: '/#work', label: 'Work' },
@@ -10,11 +11,85 @@ const links = [
 ];
 ---
 
-<header class="flex flex-wrap items-center justify-between gap-4 pt-4">
+<header class="relative flex flex-wrap items-center justify-between gap-4 pt-4">
   <a href="/" class="px text-[22px] text-ink no-underline">
     HEIYOAERRY.ONE<span class="blink" aria-hidden="true">_</span>
   </a>
-  <nav aria-label="Primary" class="grid w-full grid-cols-2 pr-0.5 pb-0.5 sm:flex sm:flex-nowrap sm:pr-0 sm:pl-0.5 md:w-auto">
-    {links.map((l) => <Tab href={l.href} on={l.on} class="flex-none max-sm:ml-0 max-sm:-mr-0.5 max-sm:px-2 max-sm:last:col-span-full">{l.label}</Tab>)}
+
+  <!-- Phones: menu button + popover panel -->
+  <button
+    type="button"
+    id="menu-button"
+    aria-expanded="false"
+    aria-controls="mobile-menu"
+    class="inline-flex min-h-11 items-center rounded-btn border-2 border-ink bg-surface px-3 text-sm font-semibold text-ink aria-expanded:bg-surface-2 sm:hidden"
+  >
+    [ <span aria-hidden="true" class="mx-1 text-xl leading-none">≡</span> Menu ]
+  </button>
+
+  <div id="mobile-menu" hidden class="menu-pop absolute inset-x-0 top-full z-20 mt-3 sm:hidden">
+    <WindowCard title="MENU">
+      <button
+        slot="badge"
+        type="button"
+        data-menu-close
+        aria-label="Close menu"
+        class="flex size-11 items-center justify-center border-2 border-ink bg-surface text-lg font-semibold text-ink -my-2 -mr-1.5"
+      >
+        ×
+      </button>
+      <nav aria-label="Menu">
+        <ul class="m-0 list-none p-0">
+          {
+            links.map((l) => (
+              <li class="border-b-2 border-ink last:border-b-0">
+                <a
+                  href={l.href}
+                  class:list={[
+                    'flex min-h-12 items-center px-4 text-[15px] font-semibold no-underline',
+                    l.on ? 'bg-accent text-on-accent hover:text-on-accent' : 'text-ink hover:bg-surface-2',
+                  ]}
+                >
+                  [ {l.label} ]
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </WindowCard>
+  </div>
+
+  <!-- 640px+: tab row -->
+  <nav aria-label="Primary" class="hidden pb-0.5 pl-0.5 sm:flex sm:w-full sm:flex-nowrap md:w-auto">
+    {links.map((l) => <Tab href={l.href} on={l.on} class="flex-none">{l.label}</Tab>)}
   </nav>
 </header>
+
+<script>
+  // Mobile menu: opens below the header; closes on link tap, ×, Escape or tap outside.
+  const button = document.getElementById('menu-button')!;
+  const panel = document.getElementById('mobile-menu')!;
+
+  const setOpen = (open: boolean, { restoreFocus = false } = {}) => {
+    panel.hidden = !open;
+    button.setAttribute('aria-expanded', String(open));
+    if (open) panel.querySelector<HTMLAnchorElement>('nav a')?.focus();
+    else if (restoreFocus) button.focus();
+  };
+
+  button.addEventListener('click', () => setOpen(panel.hidden));
+  panel.querySelector('[data-menu-close]')!.addEventListener('click', () => setOpen(false, { restoreFocus: true }));
+  panel.addEventListener('click', (e) => {
+    if ((e.target as Element).closest('a')) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !panel.hidden) setOpen(false, { restoreFocus: true });
+  });
+  document.addEventListener('pointerdown', (e) => {
+    const t = e.target as Node;
+    if (!panel.hidden && !panel.contains(t) && !button.contains(t)) setOpen(false);
+  });
+  // Rotating/resizing up to the tab layout shouldn't leave a stale open panel.
+  matchMedia('(min-width: 640px)').addEventListener('change', (e) => e.matches && setOpen(false));
+</script>
