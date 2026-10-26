@@ -2,21 +2,32 @@
 const year = new Date().getFullYear();
 const repo = 'aerryasmani/Project27_Portfolio';
 const workflowUrl = `https://github.com/${repo}/actions/workflows/e2e.yml`;
-const linkClass = 'inline-flex min-h-6 items-center gap-1.5 py-1 text-ink-2 max-sm:min-h-11';
+// ≥24px target; inline-flex keeps the text baseline, so the link sits on the line like plain text.
+const linkClass = 'inline-flex min-h-6 items-center gap-1.5 py-1 align-baseline text-ink-2';
 ---
 
 <footer class="flex flex-col gap-4 max-sm:mt-6">
   <div class="rule"></div>
-  <!-- Phones: stacked (4px apart, then 24px before the bug link). 640px+: one spaced row. -->
-  <div class="flex flex-col gap-1 text-[13px] text-ink-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+  <!--
+    Below 1100px: one left-aligned column, 10px apart. 1100px+: grid 1fr auto 1fr (status centred).
+    The three items need ~1050px to share a row with the middle one truly centred.
+  -->
+  <div
+    class="flex flex-col items-start gap-2.5 text-xs text-ink-2 sm:text-[13px] min-[1100px]:grid min-[1100px]:grid-cols-[1fr_auto_1fr] min-[1100px]:items-center min-[1100px]:gap-4"
+  >
     <p class="m-0">© {year} Aerry Asmani<span class="blink" aria-hidden="true">_</span></p>
-    <p class="m-0">Made with Coffee + overthinking</p>
     <!-- Server-rendered fallback; the script below swaps in the latest E2E run when the API answers. -->
-    <p class="m-0">
+    <p class="m-0 min-[1100px]:justify-self-center">
       <a id="e2e-status" href={workflowUrl} class={linkClass} data-repo={repo}>Tested with Playwright</a>
     </p>
-    <p class="m-0 mt-5 sm:mt-0">
-      <a href={`https://github.com/${repo}/issues/new?template=bug-report.yml`} class={linkClass}>Report a bug</a>
+    <!-- Each half is nowrap, so the only break is before the "·", used only when one line doesn't fit. Spaces are explicit: Astro strips inter-tag whitespace. -->
+    <p class="tagline m-0 min-[1100px]:justify-self-end">
+      <span class="whitespace-nowrap">Made with Coffee + overthinking</span>{' '}<span class="whitespace-nowrap"
+        ><span aria-hidden="true">·</span>{' '}<a
+          href={`https://github.com/${repo}/issues/new?template=bug-report.yml`}
+          class={linkClass}>Report a bug</a
+        ></span
+      >
     </p>
   </div>
 </footer>
