@@ -4,15 +4,15 @@ const year = new Date().getFullYear();
 
 <footer class="flex flex-col gap-4">
   <div class="rule"></div>
-  <div class="flex flex-col text-[13px] text-ink-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-3">
-    <span>© {year} Aerry Asmani · HeiyoJun</span>
-    <span class="flex flex-col sm:flex-row sm:items-center sm:gap-x-2">
-      <span>Made with Coffee + overthinking</span>
-      <span aria-hidden="true" class="hidden sm:inline">·</span>
+  <div class="flex flex-col gap-1 text-[13px] text-ink-2">
+    <p class="m-0">© {year} Aerry Asmani · HeiyoJun<span class="blink" aria-hidden="true">_</span></p>
+    <p class="m-0">Made with Coffee + overthinking</p>
+    <!-- mt-5 + the 4px gap = 24px; py-3/-my-3 gives a 44px tap area without adding to it -->
+    <p class="m-0 mt-5">
       <a
         href="https://github.com/aerryasmani/Project27_Portfolio/issues/new?template=bug-report.yml"
-        class="inline-flex min-h-11 items-center text-ink-2">Report a bug</a
+        class="-my-3 inline-block py-3 text-ink-2">Report a bug</a
       >
-    </span>
+    </p>
   </div>
 </footer>
