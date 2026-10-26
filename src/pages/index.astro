@@ -30,12 +30,12 @@ const profile = [
   <!-- HERO -->
   <section id="top" class="grid grid-cols-1 items-end min-[900px]:grid-cols-[1.3fr_1fr] min-[900px]:gap-16">
     <div class="flex min-w-0 flex-col gap-6">
-      <!-- One badge; wraps only between the two halves, and only when it does not fit (below ~430px) -->
-      <Badge class="flex-wrap gap-y-1 self-start">
-        <span class="inline-flex items-center gap-2 whitespace-nowrap">
-          <span aria-hidden="true" class="size-2.5 bg-accent"></span>QA Automation Engineer ·
+      <!-- One line, never wraps; location is shorter on phones (the other span is display:none) -->
+      <Badge class="self-start max-sm:text-xs max-sm:tracking-[0.04em] max-[359px]:tracking-normal!">
+        <span aria-hidden="true" class="size-2.5 flex-none bg-accent"></span>
+        <span class="whitespace-nowrap">
+          QA Automation Engineer · <span class="sm:hidden">Malaysia</span><span class="hidden sm:inline">Kuala Lumpur, MY</span>
         </span>
-        <span class="whitespace-nowrap">Kuala Lumpur, MY</span>
       </Badge>
       <h1 class="px m-0 text-[clamp(40px,5vw,72px)] leading-[1.02] tracking-[-0.015em]">
         <span class="block sm:whitespace-nowrap">I break things</span>
