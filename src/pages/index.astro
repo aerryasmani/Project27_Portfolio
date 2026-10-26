@@ -7,6 +7,7 @@ import ProjectGrid from '../components/ProjectGrid.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import ExperienceRow from '../components/ExperienceRow.astro';
 import Chip from '../components/Chip.astro';
+import Badge from '../components/Badge.astro';
 import { projects } from '../data/projects';
 import { experience } from '../data/experience';
 import { stack } from '../data/stack';
@@ -29,13 +30,9 @@ const profile = [
   <!-- HERO -->
   <section id="top" class="grid grid-cols-1 items-end min-[900px]:grid-cols-[1.3fr_1fr] min-[900px]:gap-16">
     <div class="flex min-w-0 flex-col gap-6">
-      <div class="flex flex-wrap gap-2 text-xs font-semibold tracking-[0.08em]">
-        <span class="inline-flex h-8 items-center gap-2 rounded-chip border-2 border-ink bg-surface px-3 whitespace-nowrap">
-          <span aria-hidden="true" class="size-2.5 bg-accent"></span>QA AUTOMATION ENGINEER
-        </span>
-        <span class="inline-flex h-8 items-center rounded-chip border-2 border-ink bg-surface px-3 whitespace-nowrap">
-          KUALA LUMPUR, MY
-        </span>
+      <div class="flex flex-wrap gap-2">
+        <Badge><span aria-hidden="true" class="size-2.5 bg-accent"></span>QA Automation Engineer</Badge>
+        <Badge>Kuala Lumpur, MY</Badge>
       </div>
       <h1 class="px m-0 text-[clamp(40px,5vw,72px)] leading-[1.02] tracking-[-0.015em]">
         <span class="block sm:whitespace-nowrap">I break things</span>
@@ -50,8 +47,8 @@ const profile = [
       </div>
     </div>
 
-    <WindowCard title="USER PROFILE" class="mt-8 rounded-[2px] min-[900px]:mt-0">
-      <span slot="badge" class="border-2 border-ink bg-surface px-2 py-0.5 text-[13px] font-semibold">ID: HEIYOJUN</span>
+    <WindowCard title="USER PROFILE" class="mt-8 min-[900px]:mt-0">
+      <Badge slot="badge">ID: HeiyoJun</Badge>
       <div class="flex flex-nowrap items-center gap-[18px] p-4 max-[419px]:flex-wrap sm:p-5">
         <div class="size-[88px] flex-none border-2 border-ink bg-[#111]">
           <img src="/avatar.svg" alt="Pixel avatar" width="84" height="84" class="block size-full" />
