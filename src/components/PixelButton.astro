@@ -10,10 +10,10 @@ const { href, variant = 'default', class: className, ...rest } = Astro.props;
 const Tag = href ? 'a' : 'button';
 
 const classes = [
-  'inline-flex min-h-11 items-center justify-center rounded-btn border-2 border-ink px-3 sm:px-[18px]',
+  'inline-flex min-h-11 items-center justify-center rounded-btn border-2 border-line px-3 sm:px-[18px]',
   'font-body text-sm font-semibold sm:text-[15px] no-underline',
   'hover:outline-3 hover:outline-offset-2 hover:outline-accent',
-  variant === 'primary' ? 'bg-accent text-on-accent hover:text-on-accent' : 'bg-surface text-ink hover:text-black',
+  variant === 'primary' ? 'bg-accent text-on-accent hover:text-on-accent' : 'bg-surface text-ink hover:text-ink-hover',
   className,
 ];
 ---

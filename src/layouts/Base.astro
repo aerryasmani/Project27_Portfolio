@@ -15,9 +15,25 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Theme before first paint: saved choice, else the system setting. Must stay first in <head>. -->
+    <script is:inline>
+      const t =
+        (() => {
+          try {
+            return localStorage.getItem('theme');
+          } catch (e) {
+            return null;
+          }
+        })() || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = t;
+    </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#2B4CFF" />
+    <meta name="theme-color" content="#F2EEE3" />
+    <script is:inline>
+      document.querySelector('meta[name="theme-color"]').content =
+        document.documentElement.dataset.theme === 'dark' ? '#11131C' : '#F2EEE3';
+    </script>
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />

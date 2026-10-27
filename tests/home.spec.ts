@@ -114,12 +114,45 @@ test('Contact - 001 | Email, GitHub, LinkedIn and Medium links have correct href
   }
 });
 
-test('A11y - 001 | No serious or critical axe violations', async ({ page }) => {
-  const results = await new AxeBuilder({ page })
-    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'])
-    .analyze();
-  const blocking = results.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical');
-  expect(
-    blocking.map((v) => `${v.id} (${v.impact}): ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`),
-  ).toEqual([]);
+for (const theme of ['light', 'dark'] as const) {
+  test(`A11y - 001 | No serious or critical axe violations (${theme} theme)`, async ({ page }) => {
+    await page.emulateMedia({ colorScheme: theme });
+    await page.goto('/');
+    await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
+    const results = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'])
+      .analyze();
+    const blocking = results.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical');
+    expect(
+      blocking.map((v) => `${v.id} (${v.impact}): ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`),
+    ).toEqual([]);
+  });
+}
+
+test('Theme - 001 | Toggle switches theme and persists after reload', async ({ page }) => {
+  const html = page.locator('html');
+  const toggle = page.locator('#theme-toggle');
+  await expect(html).toHaveAttribute('data-theme', 'light'); // test browsers default to a light system theme
+  await expect(toggle).toHaveAccessibleName('Switch to dark mode');
+  await expect(toggle).toHaveText(/Dark/);
+
+  await toggle.click();
+  await expect(html).toHaveAttribute('data-theme', 'dark');
+  await expect(toggle).toHaveAccessibleName('Switch to light mode');
+  await expect(toggle).toHaveText(/Light/);
+  await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#11131C');
+
+  await page.reload();
+  await expect(html).toHaveAttribute('data-theme', 'dark');
+  await expect(toggle).toHaveAccessibleName('Switch to light mode');
+});
+
+test.describe('system prefers dark', () => {
+  test.use({ colorScheme: 'dark' });
+
+  test('Theme - 002 | Defaults to dark when the system prefers dark', async ({ page }) => {
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+    await expect(page.locator('#theme-toggle')).toHaveAccessibleName('Switch to light mode');
+    await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#11131C');
+  });
 });

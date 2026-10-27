@@ -22,7 +22,7 @@ const linkClass = 'inline-flex min-h-6 items-center gap-1.5 py-1 align-baseline 
          the script below sets the state colour, text and link from the latest run. -->
     <p class="m-0 min-[1100px]:justify-self-center">
       <Badge href={workflowUrl} id="e2e-status" data-repo={repo}>
-        <span aria-hidden="true" data-square class="size-2.5 flex-none border-2 border-ink bg-surface"></span>
+        <span aria-hidden="true" data-square class="size-2.5 flex-none border-2 border-line bg-surface"></span>
         <span aria-live="polite" data-text>Tested with Playwright</span>
       </Badge>
     </p>
@@ -79,7 +79,7 @@ const linkClass = 'inline-flex min-h-6 items-center gap-1.5 py-1 align-baseline 
     if (!badge || !square || !label) return;
     const { colour, text, href } = stateFor(run);
     badge.href = href;
-    square.classList.remove('border-2', 'border-ink', 'bg-surface');
+    square.classList.remove('border-2', 'border-line', 'bg-surface');
     square.style.background = colour;
     label.textContent = text;
   };

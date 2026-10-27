@@ -9,6 +9,6 @@ const { variant = 'used' } = Astro.props;
 const fill = { daily: 'bg-ink text-bg', regular: 'bg-surface-3', used: 'bg-surface' }[variant];
 ---
 
-<span class:list={['inline-flex h-[34px] items-center gap-2 rounded-chip border-2 border-ink px-3.5 text-sm font-medium', fill]}>
+<span class:list={['inline-flex h-[34px] items-center gap-2 rounded-chip border-2 border-line px-3.5 text-sm font-medium', fill]}>
   <slot /><span class="sr-only">({variant})</span>
 </span>

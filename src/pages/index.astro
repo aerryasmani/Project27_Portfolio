@@ -39,7 +39,7 @@ const profile = [
       </Badge>
       <h1 class="px m-0 text-[clamp(40px,5vw,72px)] leading-[1.02] tracking-[-0.015em]">
         <span class="block sm:whitespace-nowrap">I break things</span>
-        <span class="block sm:whitespace-nowrap">before users do<span class="text-accent">.</span></span>
+        <span class="block sm:whitespace-nowrap">before users do<span class="text-accent-text">.</span></span>
       </h1>
       <p class="m-0 max-w-[52ch] text-base leading-relaxed text-balance text-ink-body sm:text-lg">
         Mostly with Selenium, Playwright, CI pipelines and a worrying amount of coffee.
@@ -53,7 +53,7 @@ const profile = [
     <WindowCard title="WHOAMI" spoken="Who am I" class="mt-8 min-[900px]:mt-0">
       <Badge slot="badge">ID: HeiyoJun</Badge>
       <div class="flex flex-nowrap items-center gap-[18px] p-4 max-[419px]:flex-wrap sm:p-5">
-        <div class="size-[88px] flex-none border-2 border-ink bg-[#111]">
+        <div class="size-[88px] flex-none border-2 border-line bg-terminal">
           <img src="/avatar.svg" alt="Pixel avatar" width="84" height="84" class="block size-full" />
         </div>
         <dl class="m-0 grid min-w-0 flex-1 grid-cols-[auto_minmax(0,1fr)] max-[419px]:basis-[180px] gap-x-3.5 gap-y-2 text-sm sm:text-[15px]">
@@ -67,7 +67,7 @@ const profile = [
           }
           <dt class="text-ink-2">Status:</dt>
           <dd class="m-0 flex min-w-0 items-center gap-2 font-semibold wrap-anywhere">
-            <span aria-hidden="true" class="size-2.5 border-2 border-ink bg-pfp"></span>Building
+            <span aria-hidden="true" class="size-2.5 border-2 border-line bg-pfp"></span>Building
           </dd>
         </dl>
       </div>
@@ -89,7 +89,7 @@ const profile = [
   <!-- EXPERIENCE -->
   <section id="experience" class="flex scroll-mt-6 flex-col gap-7">
     <SectionHeader title="EXPERIENCE">LOG</SectionHeader>
-    <ol class="m-0 list-none border-2 border-ink bg-surface p-0">
+    <ol class="m-0 list-none border-2 border-line bg-surface p-0">
       {experience.map((job) => <ExperienceRow job={job} />)}
     </ol>
   </section>
@@ -98,9 +98,9 @@ const profile = [
   <section id="stack" class="flex scroll-mt-6 flex-col gap-7">
     <SectionHeader title="STACK">
       <span aria-hidden="true" class="inline-flex items-center gap-3">
-        <span class="inline-flex items-center gap-1.5"><span class="size-2.5 border-2 border-ink bg-ink"></span>DAILY</span>
-        <span class="inline-flex items-center gap-1.5"><span class="size-2.5 border-2 border-ink bg-surface-3"></span>REGULAR</span>
-        <span class="inline-flex items-center gap-1.5"><span class="size-2.5 border-2 border-ink bg-surface"></span>USED</span>
+        <span class="inline-flex items-center gap-1.5"><span class="size-2.5 border-2 border-line bg-ink"></span>DAILY</span>
+        <span class="inline-flex items-center gap-1.5"><span class="size-2.5 border-2 border-line bg-surface-3"></span>REGULAR</span>
+        <span class="inline-flex items-center gap-1.5"><span class="size-2.5 border-2 border-line bg-surface"></span>USED</span>
       </span>
     </SectionHeader>
     <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-x-8 gap-y-7">
@@ -126,12 +126,12 @@ const profile = [
     <SectionHeader title="WRITING">
       <a href={links.medium} class="inline-flex min-h-6 items-center py-1 text-sm font-semibold max-sm:min-h-11">medium.com/@BukanJun&nbsp;<span aria-hidden="true">→</span></a>
     </SectionHeader>
-    <div class="flex flex-col border-t-2 border-ink">
+    <div class="flex flex-col border-t-2 border-line">
       {
         posts.map((p) => (
           <a
             href={p.href}
-            class="flex flex-wrap justify-between gap-x-6 gap-y-2 border-b-2 border-ink px-1 py-[18px] no-underline hover:bg-surface-2"
+            class="flex flex-wrap justify-between gap-x-6 gap-y-2 border-b-2 border-line px-1 py-[18px] no-underline hover:bg-surface-2"
           >
             <span class="text-lg font-semibold">{p.title}</span>
             <span class="text-sm text-ink-2">
@@ -153,7 +153,7 @@ const profile = [
             <path
               d="M5 0h0v1h1v2h1v2h1v2h1v2h1v1H0V9h1V7h1V5h1V3h1V1h1z"
               style="fill: var(--accent)"
-              stroke="#333"
+              style="stroke: var(--border)"
               stroke-width="0.6"></path>
             <rect x="4.5" y="3.5" width="1" height="3" style="fill: var(--on-accent)"></rect>
             <rect x="4.5" y="7.5" width="1" height="1" style="fill: var(--on-accent)"></rect>

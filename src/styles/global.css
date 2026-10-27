@@ -10,30 +10,59 @@
     'DotGothic16'    / 'Geist Mono'     / 400
     'Silkscreen'     / 'IBM Plex Mono'  / 700
 */
+/* Light theme (default). Every colour on the site comes from these tokens. */
 :root {
-  --accent: #2b4cff; /* Klein ink blue. Fills only. */
-  --on-accent: #ffffff; /* ALL text/icons on accent fills (5.9:1) */
-  --accent-lite: #8fa2ff; /* accent on dark surfaces (terminal text, checks, bars) */
-  --pfp: #62b64b; /* avatar green — small echoes of the avatar only (status dot); never text */
+  color-scheme: light;
+
   --bg: #f2eee3;
-  --surface: #f7f5ef;
-  --surface-2: #e6e2d6;
-  --surface-3: #cfccc3;
+  --surface: #f7f5ef; /* cards, buttons, badges */
+  --surface-2: #e6e2d6; /* card headers, hover */
+  --surface-3: #cfccc3; /* dithered title bars, mid chips */
   --text: #333333;
   --text-2: #666666; /* labels and meta — never lighter */
   --text-body: #444444;
-  --tick: #9a968c;
+  --text-hover: #000000;
+  --border: #333333; /* all 2px borders, dither dots, dashed rules */
+  --ticks: #9a968c; /* ruler tick frame */
+  --accent: #2b4cff; /* Klein ink blue. Fills only — text on it is --on-accent */
+  --on-accent: #ffffff; /* ALL text/icons on accent fills (5.9:1) */
+  --accent-text: #2b4cff; /* accent used as text (e.g. the headline full stop) */
+  --terminal: #1f1f1d; /* dark windows (avatar box) */
+  --pfp: #62b64b; /* avatar green — small echoes of the avatar only (status dot); never text */
 
   --display: 'Pixelify Sans', monospace;
   --body: 'Geist Mono', monospace;
   --dw: 700;
 }
 
+/* Dark theme — "cool ink navy". Set by the inline script in Base.astro (saved choice, else system). */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #11131c;
+  --surface: #181b27;
+  --surface-2: #20243a;
+  --surface-3: #2a2f45;
+  --text: #e6e8f2;
+  --text-2: #9da3bd;
+  --text-body: #c3c8dc;
+  --text-hover: #ffffff;
+  --border: #c9cee6;
+  --ticks: #4a5072;
+  --accent-text: #8fa2ff;
+  --terminal: #0a0b12;
+}
+
+/* dark: utilities follow the data-theme attribute, not the OS setting directly */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
 /* Tailwind theme reads the same variables, so utilities and raw CSS agree. */
 @theme inline {
   --color-accent: var(--accent);
   --color-on-accent: var(--on-accent);
-  --color-accent-lite: var(--accent-lite);
+  --color-accent-text: var(--accent-text);
+  --color-line: var(--border);
+  --color-terminal: var(--terminal);
   --color-pfp: var(--pfp);
   --color-bg: var(--bg);
   --color-surface: var(--surface);
@@ -42,6 +71,7 @@
   --color-ink: var(--text);
   --color-ink-2: var(--text-2);
   --color-ink-body: var(--text-body);
+  --color-ink-hover: var(--text-hover);
 
   --font-display: var(--display);
   --font-body: var(--body);
@@ -66,7 +96,7 @@
     color: var(--text);
   }
   a:hover {
-    color: #000;
+    color: var(--text-hover);
   }
   :focus-visible {
     outline: 3px solid var(--text);
@@ -84,7 +114,7 @@
     padding: 8px 14px;
     background: var(--accent);
     color: var(--on-accent);
-    border: 2px solid var(--text);
+    border: 2px solid var(--border);
     font-weight: 600;
     text-decoration: none;
   }
@@ -104,10 +134,10 @@
   /* Ruler ticks on all four page edges */
   .frame {
     background-image:
-      repeating-linear-gradient(90deg, var(--tick) 0 1px, transparent 1px 12px),
-      repeating-linear-gradient(90deg, var(--tick) 0 1px, transparent 1px 12px),
-      repeating-linear-gradient(180deg, var(--tick) 0 1px, transparent 1px 12px),
-      repeating-linear-gradient(180deg, var(--tick) 0 1px, transparent 1px 12px);
+      repeating-linear-gradient(90deg, var(--ticks) 0 1px, transparent 1px 12px),
+      repeating-linear-gradient(90deg, var(--ticks) 0 1px, transparent 1px 12px),
+      repeating-linear-gradient(180deg, var(--ticks) 0 1px, transparent 1px 12px),
+      repeating-linear-gradient(180deg, var(--ticks) 0 1px, transparent 1px 12px);
     background-size: 100% 8px, 100% 8px, 8px 100%, 8px 100%;
     background-position: top left, bottom left, top left, top right;
     background-repeat: no-repeat;
@@ -117,21 +147,21 @@
   .rule {
     height: 6px;
     background:
-      repeating-linear-gradient(90deg, var(--text) 0 6px, transparent 6px 9px) top / 100% 1px no-repeat,
-      repeating-linear-gradient(90deg, var(--text) 0 6px, transparent 6px 9px) bottom / 100% 1px no-repeat;
+      repeating-linear-gradient(90deg, var(--border) 0 6px, transparent 6px 9px) top / 100% 1px no-repeat,
+      repeating-linear-gradient(90deg, var(--border) 0 6px, transparent 6px 9px) bottom / 100% 1px no-repeat;
   }
 
   /* Dotted filler after a section title */
   .leader {
     flex: 1 1 auto;
     min-width: 24px;
-    border-bottom: 2px dotted var(--text);
+    border-bottom: 2px dotted var(--border);
     transform: translateY(-6px);
   }
 
   /* 4px dot pattern for shadows and title bars */
   .dither {
-    background-image: radial-gradient(var(--text) 0.9px, transparent 1.1px);
+    background-image: radial-gradient(var(--border) 0.9px, transparent 1.1px);
     background-size: 4px 4px;
   }
 

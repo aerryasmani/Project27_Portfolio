@@ -15,8 +15,8 @@ const Title = heading ? 'h2' : 'span';
 ---
 
 <div class:list={['pixel-shadow dither', className]}>
-  <div class="lift border-2 border-ink bg-surface">
-    <div class="dither flex items-center justify-between border-b-2 border-ink bg-surface-3 px-3.5 py-2.5">
+  <div class="lift border-2 border-line bg-surface">
+    <div class="dither flex items-center justify-between border-b-2 border-line bg-surface-3 px-3.5 py-2.5">
       <Title class="px m-0 bg-surface-3 px-1 text-base sm:text-lg">
         {
           spoken ? (
@@ -34,7 +34,7 @@ const Title = heading ? 'h2' : 'span';
         close && (
           <span
             aria-hidden="true"
-            class="flex size-[22px] items-center justify-center border-2 border-ink bg-surface text-sm font-semibold"
+            class="flex size-[22px] items-center justify-center border-2 border-line bg-surface text-sm font-semibold"
           >
             ×
           </span>
