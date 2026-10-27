@@ -57,6 +57,76 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     />
   </head>
   <body>
+    <!--
+      One-time boot overlay, built by JS so no-JS visitors and crawlers get the page directly.
+      The page renders normally underneath; the overlay is aria-hidden and never takes focus.
+    -->
+    <script is:inline>
+      (() => {
+        try {
+          const params = new URLSearchParams(location.search);
+          if (
+            localStorage.getItem('booted') ||
+            location.hash ||
+            params.has('noboot') ||
+            matchMedia('(prefers-reduced-motion: reduce)').matches ||
+            /bot|crawl|spider|slurp|lighthouse|pagespeed|facebookexternalhit|embedly|bingpreview/i.test(navigator.userAgent)
+          )
+            return;
+          localStorage.setItem('booted', '1'); // set at start: a reload never replays it
+        } catch (e) {
+          return; // no storage → can't remember, so don't show at all
+        }
+
+        const DOTS_TO = 30; // result column
+        const lines = [
+          ['HEIYOAERRY BIOS v2027.10'],
+          ['Checking coffee levels', 'OK'],
+          ['Loading test suites', 'OK'],
+          ['Mounting /portfolio', 'OK'],
+          ['Bugs detected', '0'],
+          ['Starting heiyoaerry.one', null],
+        ];
+        const el = (tag, cls, text) => {
+          const n = document.createElement(tag);
+          if (cls) n.className = cls;
+          if (text) n.textContent = text;
+          return n;
+        };
+
+        const overlay = el('div', 'boot');
+        overlay.setAttribute('aria-hidden', 'true');
+        lines.forEach(([label, result], i) => {
+          const line = el('div', 'boot-line');
+          line.style.setProperty('--i', String(i));
+          line.append(label);
+          if (result !== undefined && result !== null) {
+            line.append(el('span', 'boot-dots', '.'.repeat(Math.max(2, DOTS_TO - label.length))), ' ', el('span', 'boot-ok', result));
+          }
+          if (result === null) line.append(el('span', 'blink', '_'));
+          overlay.append(line);
+        });
+        overlay.append(el('div', 'boot-hint', '[ click or press any key to skip ]'));
+        document.body.prepend(overlay);
+
+        const SKIP = ['pointerdown', 'keydown', 'wheel', 'touchstart', 'scroll'];
+        let done = false;
+        const finish = () => {
+          if (done) return;
+          done = true;
+          for (const type of SKIP) removeEventListener(type, finish, true);
+          overlay.remove();
+        };
+        for (const type of SKIP) addEventListener(type, finish, { capture: true, passive: true });
+        // Lines finish at ~900ms; fade at 1200ms (250ms, 4 steps); remove when the fade ends.
+        setTimeout(() => {
+          if (done) return;
+          overlay.classList.add('boot-out');
+          overlay.addEventListener('animationend', finish, { once: true });
+          setTimeout(finish, 400); // fallback if animationend never fires
+        }, 1200);
+      })();
+    </script>
     <a class="skip-link" href="#main">Skip to content</a>
     <div class="frame min-h-screen px-4 pt-6 pb-12 sm:px-6">
       <div class="mx-auto flex max-w-[1180px] flex-col gap-8 sm:gap-section">

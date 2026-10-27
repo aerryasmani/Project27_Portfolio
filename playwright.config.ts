@@ -4,6 +4,7 @@ import { defineConfig, devices } from '@playwright/test';
 // Unset → build and serve the local site with `astro preview`.
 const PORT = 4321;
 const BASE_URL = process.env.BASE_URL || undefined; // empty string counts as unset
+const baseURL = BASE_URL ?? `http://localhost:${PORT}`;
 
 export default defineConfig({
   testDir: 'tests',
@@ -12,7 +13,9 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : [['list'], ['html', { open: 'never' }]],
   use: {
-    baseURL: BASE_URL ?? `http://localhost:${PORT}`,
+    baseURL,
+    // Pretend every visitor has already seen the boot overlay; Boot-* tests clear this.
+    storageState: { cookies: [], origins: [{ origin: new URL(baseURL).origin, localStorage: [{ name: 'booted', value: '1' }] }] },
     trace: 'retain-on-failure',
   },
   projects: [

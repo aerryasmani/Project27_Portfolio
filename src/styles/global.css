@@ -196,6 +196,59 @@
   }
 }
 
+/* First-visit boot overlay (built by the inline script in Base.astro). Same terminal colours in both
+   themes, so these are deliberately not theme tokens. */
+.boot {
+  --boot-bg: #11131c;
+  --boot-text: #e6e8f2;
+  --boot-dim: #9da3bd;
+  --boot-ok: #3fb950;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  padding: 24px;
+  background: var(--boot-bg);
+  color: var(--boot-text);
+  font: 14px/1.7 var(--body);
+  text-align: left;
+  white-space: pre;
+}
+@media (max-width: 639px) {
+  .boot {
+    font-size: 13px;
+  }
+}
+.boot-line {
+  opacity: 0;
+  animation: boot-line 1ms steps(1) forwards;
+  animation-delay: calc(var(--i) * 180ms);
+}
+.boot-ok {
+  color: var(--boot-ok);
+}
+.boot-dots,
+.boot-hint {
+  color: var(--boot-dim);
+}
+.boot-hint {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+}
+.boot-out {
+  animation: boot-out 250ms steps(4) forwards;
+}
+@keyframes boot-line {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes boot-out {
+  to {
+    opacity: 0;
+  }
+}
+
 @keyframes menu-pop {
   from {
     opacity: 0;
