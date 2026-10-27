@@ -116,9 +116,12 @@ test('Contact - 001 | Email, GitHub, LinkedIn and Medium links have correct href
 
 for (const theme of ['light', 'dark'] as const) {
   test(`A11y - 001 | No serious or critical axe violations (${theme} theme)`, async ({ page }) => {
-    await page.emulateMedia({ colorScheme: theme });
+    await page.addInitScript((t) => localStorage.setItem('theme', t), theme);
     await page.goto('/');
     await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
+    if (theme === 'dark' && (await isPhoneLayout(page))) {
+      await page.getByRole('button', { name: /Menu/ }).click(); // also check the toggle inside the panel
+    }
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'])
       .analyze();
@@ -129,30 +132,42 @@ for (const theme of ['light', 'dark'] as const) {
   });
 }
 
+/** The visible theme toggle: in the header on 640px+, inside the opened menu panel on phones. */
+async function themeToggle(page: Page) {
+  if (await isPhoneLayout(page)) {
+    await page.getByRole('button', { name: /Menu/ }).click();
+    return page.locator('#mobile-menu [data-theme-toggle]');
+  }
+  return page.locator('header > div:not(#mobile-menu) [data-theme-toggle]');
+}
+
 test('Theme - 001 | Toggle switches theme and persists after reload', async ({ page }) => {
   const html = page.locator('html');
-  const toggle = page.locator('#theme-toggle');
-  await expect(html).toHaveAttribute('data-theme', 'light'); // test browsers default to a light system theme
+  await expect(html).toHaveAttribute('data-theme', 'light');
+
+  const toggle = await themeToggle(page);
   await expect(toggle).toHaveAccessibleName('Switch to dark mode');
-  await expect(toggle).toHaveText(/Dark/);
+  await expect(toggle).toHaveAttribute('aria-pressed', 'false');
 
   await toggle.click();
   await expect(html).toHaveAttribute('data-theme', 'dark');
   await expect(toggle).toHaveAccessibleName('Switch to light mode');
-  await expect(toggle).toHaveText(/Light/);
+  await expect(toggle).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#11131C');
+  if (await page.locator('#menu-button').isVisible()) {
+    await expect(page.locator('#mobile-menu')).toBeVisible(); // toggling doesn't close the menu
+  }
 
   await page.reload();
   await expect(html).toHaveAttribute('data-theme', 'dark');
-  await expect(toggle).toHaveAccessibleName('Switch to light mode');
+  await expect(await themeToggle(page)).toHaveAttribute('aria-pressed', 'true');
 });
 
 test.describe('system prefers dark', () => {
   test.use({ colorScheme: 'dark' });
 
-  test('Theme - 002 | Defaults to dark when the system prefers dark', async ({ page }) => {
-    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-    await expect(page.locator('#theme-toggle')).toHaveAccessibleName('Switch to light mode');
-    await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#11131C');
+  test('Theme - 002 | Defaults to light even when the system prefers dark', async ({ page }) => {
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+    await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#F2EEE3');
   });
 });

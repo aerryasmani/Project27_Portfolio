@@ -1,6 +1,7 @@
 ---
 import Tab from './Tab.astro';
 import WindowCard from './WindowCard.astro';
+import ThemeToggle from './ThemeToggle.astro';
 
 const links = [
   { href: '/#work', label: 'Work' },
@@ -11,26 +12,16 @@ const links = [
 ];
 ---
 
-<header class="relative flex flex-wrap items-center gap-x-2 gap-y-4 pt-4">
-  <a href="/" class="px mr-auto text-[22px] text-ink no-underline">
+<!--
+  Phones: one row — logo (shrinks via clamp) left, Menu right. The theme toggle lives in the menu panel.
+  640px+: logo, then the tab row + icon toggle (own row below 1024px, beside the logo from 1024px).
+-->
+<header
+  class="relative flex flex-nowrap items-center justify-between gap-3 pt-4 sm:flex-wrap sm:justify-start sm:gap-x-2 sm:gap-y-4"
+>
+  <a href="/" class="px min-w-0 text-[clamp(16px,4.6vw,22px)] whitespace-nowrap text-ink no-underline sm:mr-auto">
     HEIYOAERRY.ONE<span class="blink" aria-hidden="true">_</span>
   </a>
-
-  <!--
-    Theme toggle + Menu button wrap together. Phones: toggle left of Menu (own row under the logo
-    when the three don't fit). 640–1023px: beside the logo, tabs on their own row. 1024px+: right of the tabs. Both labels are in the markup; CSS shows the right one.
-    Accessible name says the action ("Switch to light mode") so it contains the visible word (WCAG 2.5.3).
-  -->
-  <div class="flex items-center gap-2 lg:order-last">
-  <button
-    type="button"
-    id="theme-toggle"
-    aria-label="Switch to dark mode"
-    class="inline-flex min-h-11 items-center rounded-btn border-2 border-line bg-surface px-3 text-sm font-semibold whitespace-nowrap text-ink hover:bg-surface-2"
-  >
-    <span class="dark:hidden">[ <span aria-hidden="true">☾</span> Dark ]</span>
-    <span class="hidden dark:inline">[ <span aria-hidden="true">☀</span> Light ]</span>
-  </button>
 
   <!-- Phones: menu button + popover panel -->
   <button
@@ -38,23 +29,24 @@ const links = [
     id="menu-button"
     aria-expanded="false"
     aria-controls="mobile-menu"
-    class="inline-flex min-h-11 items-center rounded-btn border-2 border-line bg-surface px-3 text-sm font-semibold text-ink aria-expanded:bg-surface-2 sm:hidden"
+    class="inline-flex min-h-11 flex-none items-center rounded-btn border-2 border-line bg-surface px-3 text-sm font-semibold text-ink aria-expanded:bg-surface-2 sm:hidden"
   >
     [ <span aria-hidden="true" class="mx-1 text-xl leading-none">≡</span> Menu ]
   </button>
-  </div>
 
   <div id="mobile-menu" hidden class="menu-pop absolute inset-x-0 top-full z-20 mt-3 sm:hidden">
     <WindowCard title="MENU">
-      <button
-        slot="badge"
-        type="button"
-        data-menu-close
-        aria-label="Close menu"
-        class="-my-2 -mr-1.5 flex size-11 items-center justify-center rounded-btn border-2 border-line bg-surface text-lg font-semibold text-ink"
-      >
-        ×
-      </button>
+      <div slot="badge" class="-my-2 -mr-1.5 flex items-center gap-2">
+        <ThemeToggle />
+        <button
+          type="button"
+          data-menu-close
+          aria-label="Close menu"
+          class="flex size-11 items-center justify-center rounded-btn border-2 border-line bg-surface text-lg font-semibold text-ink"
+        >
+          ×
+        </button>
+      </div>
       <nav aria-label="Menu">
         <ul class="m-0 list-none p-0">
           {
@@ -77,47 +69,18 @@ const links = [
     </WindowCard>
   </div>
 
-  <!-- 640px+: tab row -->
-  <nav aria-label="Primary" class="hidden pb-0.5 pl-0.5 sm:flex sm:w-full sm:flex-nowrap lg:w-auto">
-    {links.map((l) => <Tab href={l.href} on={l.on} class="flex-none">{l.label}</Tab>)}
-  </nav>
+  <!-- 640px+: tab row, then the icon toggle right after Contact -->
+  <div class="hidden items-center gap-2 sm:flex sm:w-full lg:w-auto">
+    <nav aria-label="Primary" class="flex flex-nowrap pb-0.5 pl-0.5">
+      {links.map((l) => <Tab href={l.href} on={l.on} class="flex-none">{l.label}</Tab>)}
+    </nav>
+    <ThemeToggle />
+  </div>
 </header>
 
 <script>
-  // Theme toggle: flips data-theme, saves the choice, keeps theme-color in sync.
-  // Until the visitor chooses, follow live system changes.
-  const root = document.documentElement;
-  const themeButton = document.getElementById('theme-toggle')!;
-  const themeMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
-
-  const applyTheme = (theme: 'light' | 'dark') => {
-    root.dataset.theme = theme;
-    themeButton.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-    if (themeMeta) themeMeta.content = theme === 'dark' ? '#11131C' : '#F2EEE3';
-  };
-  const savedTheme = () => {
-    try {
-      return localStorage.getItem('theme');
-    } catch {
-      return null;
-    }
-  };
-
-  applyTheme(root.dataset.theme === 'dark' ? 'dark' : 'light');
-  themeButton.addEventListener('click', () => {
-    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-    applyTheme(next);
-    try {
-      localStorage.setItem('theme', next);
-    } catch {
-      /* storage unavailable — choice lasts for this page only */
-    }
-  });
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    if (!savedTheme()) applyTheme(e.matches ? 'dark' : 'light');
-  });
-
   // Mobile menu: opens below the header; closes on link tap, ×, Escape or tap outside.
+  // (The theme toggle inside the panel doesn't close it — it isn't a link.)
   const button = document.getElementById('menu-button')!;
   const panel = document.getElementById('mobile-menu')!;
 
